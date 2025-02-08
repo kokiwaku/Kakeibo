@@ -5,26 +5,15 @@
     "module": "commonjs",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
     "typeRoots": ["./node_modules/@types"],
-    "types": [
-      "react",
-      "react-dom",
-      "node",
-      "react-redux",
-    ],
+    "types": ["react", "react-dom", "node", "react-redux"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "noEmit": true,
     "incremental": true,
@@ -37,12 +26,6 @@
       }
     ]
   },
-  "include": [
-    "src/**/*",
-    ".next/types/**/*.ts",
-    "middleware.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*", ".next/types/**/*.ts", "middleware.ts"],
+  "exclude": ["node_modules"]
 }
