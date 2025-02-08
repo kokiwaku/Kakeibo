@@ -1,35 +1,38 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    // コンパイル後のjsのバージョン
+    "target": "ESNext",
     "jsx": "preserve",
-    "module": "commonjs",
+    // モジュールシステム
+    "module": "esnext",
+    // モジュール解決の基準となるベースディレクトリの設定
     "baseUrl": ".",
+    // import文でのパスの解決方法を設定
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
+    // 型定義ファイルの検索場所を指定
     "typeRoots": ["./node_modules/@types"],
-    "types": [
-      "react",
-      "react-dom",
-      "node",
-      "react-redux",
-    ],
+    // 自動的に含める型定義を指定
+    "types": ["react", "react-dom", "node"],
     "esModuleInterop": true,
+    // ファイル名の大文字・小文字を厳密にチェック
     "forceConsistentCasingInFileNames": true,
+    // 厳格な型チェックを行う
     "strict": true,
+    // 型定義ファイルの型チェックをスキップ(ビルド時間短縮のため)
     "skipLibCheck": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    // JavaScriptファイルの出力を無効化
     "noEmit": true,
+    // インクリメンタルコンパイルを有効化
     "incremental": true,
-    "moduleResolution": "node",
+    // bundler形式のモジュール解決を採用
+    "moduleResolution": "bundler",
+    // Jsonファイルをimport可能にする
     "resolveJsonModule": true,
+    // ファイルを個別のモジュールとして扱う
     "isolatedModules": true,
     "plugins": [
       {
@@ -37,12 +40,8 @@
       }
     ]
   },
-  "include": [
-    "src/**/*",
-    ".next/types/**/*.ts",
-    "middleware.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  // コンパイル対象のファイルを指定
+  "include": ["src/**/*", ".next/types/**/*.ts"],
+  // コンパイル対象外のファイルを指定
+  "exclude": ["node_modules"]
 }
