@@ -11,7 +11,7 @@ services:
     volumes:
       - ./front:/workspace
     # debug modeで起動
-    command: sh -c "npm run dev"
+    command: sh -c "npm run debug"
 
   back:
     container_name: back
