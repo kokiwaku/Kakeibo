@@ -11,7 +11,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex h-screen gb-background">
       <SidePanel />
-      <main>{children}</main>
+      <div className="flex flex-1 flex-col">{children}</div>
     </div>
   )
 }
