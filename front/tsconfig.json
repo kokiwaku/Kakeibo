@@ -9,20 +9,14 @@
     "baseUrl": ".",
     // import文でのパスの解決方法を設定
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"],
+      "@/app": ["src/app/*"],
+      "@features/*": ["src/features/*"]
     },
     // 型定義ファイルの検索場所を指定
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
+    "typeRoots": ["./node_modules/@types"],
     // 自動的に含める型定義を指定
-    "types": [
-      "react",
-      "react-dom",
-      "node"
-    ],
+    "types": ["react", "react-dom", "node"],
     "esModuleInterop": true,
     // ファイル名の大文字・小文字を厳密にチェック
     "forceConsistentCasingInFileNames": true,
@@ -30,11 +24,7 @@
     "strict": true,
     // 型定義ファイルの型チェックをスキップ(ビルド時間短縮のため)
     "skipLibCheck": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     // JavaScriptファイルの出力を無効化
     "noEmit": true,
@@ -53,13 +43,7 @@
     ]
   },
   // コンパイル対象のファイルを指定
-  "include": [
-    ".next/types/**/*.ts",
-    "src/**/*",
-    "dist/types/**/*.ts"
-  ],
+  "include": [".next/types/**/*.ts", "src/**/*", "dist/types/**/*.ts"],
   // コンパイル対象外のファイルを指定
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
