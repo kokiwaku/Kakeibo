@@ -1,13 +1,15 @@
 import React from 'react'
+import ExpenceModal from '@/features/expenses/components/ExpenceModal'
+import ExpenceList from '@features/expenses/components/ExpenceList'
+import ExpenceHeader from '@features/expenses/components/ExpenceHeader'
 
 const Page = () => {
   return (
-    <div className="py-18 px-8">
-      <h1 className="text-2xl font-bold">支出一覧</h1>
-      <div className="mt-8">
-        <p>ページの内容</p>
-      </div>
-    </div>
+    <main className="flex flex-col gap-17 py-25 px-10">
+      <ExpenceHeader />
+      <ExpenceList />
+      <ExpenceModal />
+    </main>
   )
 }
 export default Page
