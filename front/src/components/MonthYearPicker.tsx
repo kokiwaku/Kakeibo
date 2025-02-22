@@ -1,35 +1,37 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { Label, Input } from '@headlessui/react'
 import { useState } from 'react'
+import {
+  getYearMonthISOString,
+  getPrevYearMonth,
+  getNextYearMonth,
+  formatISOString,
+} from '@utils/dateHelper'
 
 const MonthYearPicker = () => {
-  const today = new Date()
-  const year = today.getFullYear()
-  const month = String(today.getMonth() + 1).padStart(2, '0')
-  const [inputDate, setInputDate] = useState(`${year}-${month}`)
+  const [inputDate, setInputDate] = useState(getYearMonthISOString())
 
   /**
    * 前月ボタンクリック時の処理
    */
   const handlePrevMonthClick = () => {
+    if (inputDate === '') {
+      return
+    }
     // inputDateをDate型に変換
-    const date = new Date(inputDate)
-    // 1ヶ月前の日付を取得
-    date.setMonth(date.getMonth() - 1)
-    // inputDateにセット
-    setInputDate(date.toISOString().slice(0, 7))
+    const prevYearMonth = getPrevYearMonth(new Date(inputDate))
+    setInputDate(formatISOString(prevYearMonth))
   }
 
   /**
    * 次月ボタンクリック時の処理
    */
   const handleNextMonthClick = () => {
-    // inputDateをDate型に変換
-    const date = new Date(inputDate)
-    // 1ヶ月後の日付を取得
-    date.setMonth(date.getMonth() + 1)
-    // inputDateにセット
-    setInputDate(date.toISOString().slice(0, 7))
+    if (inputDate === '') {
+      return
+    }
+    const nextYearMonth = getNextYearMonth(new Date(inputDate))
+    setInputDate(formatISOString(nextYearMonth))
   }
 
   /**
@@ -42,18 +44,18 @@ const MonthYearPicker = () => {
 
   return (
     <div className="flex items-center gap-2">
-      <button onClick={handlePrevMonthClick}>
+      <button onClick={handlePrevMonthClick} className="cursor-pointer">
         <ChevronLeftIcon className="h-5 w-5" />
       </button>
       <div>
         <Input
           type="month"
-          className="w-30"
+          className="w-30 cursor-pointer"
           value={inputDate}
           onChange={handleInputChange}
         />
       </div>
-      <button onClick={handleNextMonthClick}>
+      <button onClick={handleNextMonthClick} className="cursor-pointer">
         <ChevronRightIcon className="h-5 w-5" />
       </button>
     </div>

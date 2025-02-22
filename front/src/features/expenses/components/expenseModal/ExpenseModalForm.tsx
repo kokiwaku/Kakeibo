@@ -6,7 +6,7 @@ import CategorySelector from './expenseModalForm/CategorySelector'
 
 const ExpenseModalForm = () => {
   const [date, setDate] = useState<string>('')
-  const [amount, setAmount] = useState<number>()
+  const [amount, setAmount] = useState<string>('')
 
   useEffect(() => {
     // フォームデフォルト値を設定
@@ -28,7 +28,7 @@ const ExpenseModalForm = () => {
             id="date"
             type="date"
             name="date"
-            className="w-full"
+            className="w-full rounded-md py-1.5 pr-2 pl-3 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
@@ -43,18 +43,21 @@ const ExpenseModalForm = () => {
           id="amount"
           type="number"
           name="amount"
-          className="w-full"
+          className="w-full rounded-md py-1.5 pr-2 pl-3 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
           placeholder="金額を入力してください"
           value={amount}
           onChange={(e) => {
-            setAmount(Number(e.target.value))
+            setAmount(e.target.value)
           }}
         />
       </div>
       <div className="flex flex-col gap-1 w-full">
         <Field>
           <Label>メモ</Label>
-          <Textarea rows={3} className="w-full" />
+          <Textarea
+            rows={3}
+            className="w-full rounded-md py-1.5 pr-2 pl-3 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+          />
         </Field>
       </div>
     </div>
