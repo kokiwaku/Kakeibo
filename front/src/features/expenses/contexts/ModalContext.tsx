@@ -5,6 +5,7 @@ import React, {
   ReactNode,
   useContext,
   useState,
+  useRef,
   Dispatch,
   SetStateAction,
 } from 'react'
@@ -16,6 +17,7 @@ export type ModalContextType = {
   modalType: ModalType
   openModal: (type: ModalType) => void
   closeModal: () => void
+  modalRef: any
 }
 
 // 明示的な型アノテーションを追加
@@ -29,6 +31,8 @@ type ModalProviderProps = {
 export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalType, setModalType] = useState<ModalType>('create')
+  // modalに設定するref
+  const modalRef = useRef()
 
   const openModal = (type: ModalType) => {
     setModalType(type)
@@ -37,7 +41,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const closeModal = () => setIsOpenModal(false)
   return (
     <ModalContext.Provider
-      value={{ isOpenModal, modalType, openModal, closeModal }}
+      value={{ isOpenModal, modalType, openModal, closeModal, modalRef }}
     >
       {children}
     </ModalContext.Provider>

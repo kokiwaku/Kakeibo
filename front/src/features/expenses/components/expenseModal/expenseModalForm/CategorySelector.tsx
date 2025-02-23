@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, Fragment } from 'react'
 import {
   Label,
   Listbox,
@@ -8,16 +8,29 @@ import {
   ListboxOption,
   ListboxOptions,
 } from '@headlessui/react'
-import { ChevronUpDownIcon } from '@heroicons/react/16/solid'
-import { CheckIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, CheckIcon } from '@heroicons/react/16/solid'
+import { useModalContext } from '@/features/expenses/contexts/ModalContext'
 
 const CategorySelector = () => {
-  // TODO: 仮のデータ
   type CategoryType = {
     id: number
     name: string
     subCategory?: { id: number; name: string }[]
   }
+  type SubCategoryType = {
+    id: number
+    name: string
+  }
+  type DisplaySubCategoryType = {
+    category: CategoryType
+    position: {
+      top: number
+      right: number
+    }
+  }
+  const { modalRef } = useModalContext()
+  const [categoryLabel, setCategoryLabel] = useState<string>('未分類')
+  // TODO: カテゴリは仮のデータなので、ユーザーごとの値をDBから取得して差し替えが必要
   const categoryList: CategoryType[] = [
     {
       id: 1,
@@ -170,28 +183,6 @@ const CategorySelector = () => {
       ],
     },
     {
-      id: 14,
-      name: '収入',
-      subCategory: [
-        { id: 1401, name: '給与' },
-        { id: 1402, name: '賞与' },
-        { id: 1403, name: '臨時収入' },
-        { id: 1404, name: '投資収入' },
-        { id: 1405, name: 'その他収入' },
-      ],
-    },
-    {
-      id: 15,
-      name: '投資',
-      subCategory: [
-        { id: 1501, name: '株式' },
-        { id: 1502, name: '投資信託' },
-        { id: 1503, name: '仮想通貨' },
-        { id: 1504, name: '外貨預金' },
-        { id: 1505, name: 'その他投資' },
-      ],
-    },
-    {
       id: 16,
       name: 'その他',
       subCategory: [
@@ -207,54 +198,196 @@ const CategorySelector = () => {
       subCategory: [],
     },
   ]
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType>(
-    categoryList[0],
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
+    null,
   )
-  const [focusedCategory, setFocusedCategory] = useState<CategoryType>()
-  const handleCategoryFocus = (category: CategoryType) => {
-    // マウスオーバー時されたカテゴリがサブカテゴリを持っている場合はサブカテゴリを表示
-    if (category.subCategory) {
-      setFocusedCategory(category)
+  const [selectedSubCategory, setSelectedSubCategory] =
+    useState<SubCategoryType | null>(null)
+  const [displaySubCategory, setDisplaySubCategory] =
+    useState<DisplaySubCategoryType | null>(null)
+  const [focusedSubCategory, setFocusedSubCategory] =
+    useState<SubCategoryType | null>(null)
+
+  /**
+   * カテゴリフォーカス時
+   */
+  const handleCategoryFocusOn = (
+    event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+    focusOnTargetCategory: CategoryType,
+  ) => {
+    // サブカテゴリを持っていない場合、終了
+    if (!focusOnTargetCategory?.subCategory) {
+      return
     }
+    /**
+     * サブカテゴリを表示する位置を算出
+     * マウスオーバーされた要素の位置-modalの位置=modal上端からの相対位置
+     */
+    const mouseOverRect = event.currentTarget.getBoundingClientRect()
+    const modalRefRect = modalRef.current.getBoundingClientRect()
+    setDisplaySubCategory({
+      category: focusOnTargetCategory,
+      position: {
+        top: mouseOverRect.top - modalRefRect.top + 5,
+        right: mouseOverRect.right - modalRefRect.left - 30,
+      },
+    })
   }
+  /**
+   * カテゴリクリック時
+   */
+  const handleCategoryClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    clickTargetCategory: CategoryType,
+  ) => {
+    // カテゴリだけを選択する動作になるため、サブカテゴリの選択状態はリセット
+    setSelectedCategory(clickTargetCategory)
+    setSelectedSubCategory(null)
+  }
+
+  /**
+   * サブカテゴリフォーカス時
+   */
+  const handleSubCategoryFocusOn = (
+    focusOnTargetSubCategory: SubCategoryType,
+  ) => {
+    setFocusedSubCategory(focusOnTargetSubCategory)
+  }
+  /**
+   * サブカテゴリフォーカス外した時
+   */
+  const handleSubCategoryFocusOff = useCallback(() => {
+    setFocusedSubCategory(null)
+  }, [])
+  /**
+   * サブカテゴリクリック時
+   */
+  const handleSubCategoryClick = (clickTargetSubCategory: SubCategoryType) => {
+    // カテゴリ & サブカテゴリを選択状態にする
+    setSelectedSubCategory(clickTargetSubCategory)
+    if (!displaySubCategory) {
+      return
+    }
+    setSelectedCategory(displaySubCategory.category)
+  }
+  /**
+   * カテゴリラベルに表示する文字列を決定
+   */
+  useEffect(() => {
+    {
+      selectedCategory && selectedSubCategory
+        ? `${selectedCategory.name} > ${selectedSubCategory.name}`
+        : '未分類'
+    }
+    if (!selectedCategory) {
+      return
+    }
+    let newCategoryLabel = selectedCategory?.name
+    if (selectedSubCategory) {
+      newCategoryLabel = `${newCategoryLabel} > ${selectedSubCategory.name}`
+    }
+    setCategoryLabel(newCategoryLabel)
+  }, [selectedCategory, selectedSubCategory])
+
+  /**
+   * サブカテゴリーの表示が残ることがあるのでクリックイベントを検知して削除
+   */
+  const handleClickOutside = () => {
+    setDisplaySubCategory(null)
+  }
+  document.addEventListener('mousedown', handleClickOutside)
 
   return (
     <>
       <Listbox value={selectedCategory} onChange={setSelectedCategory}>
         <Label>カテゴリ</Label>
-        <div className="mt-2 relative">
+        <div className="mt-2 relative category-selector">
           <ListboxButton className="grid w-full rounded-md bg-white py-1.5 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
             <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
-              <span className="block truncate">{selectedCategory.name}</span>
+              <span className="block truncate">{categoryLabel}</span>
             </span>
-            <ChevronUpDownIcon
+            <ChevronDownIcon
               aria-hidden="true"
               className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4"
             />
           </ListboxButton>
           <ListboxOptions
             transition
-            className="absolute top-8 z-10 mt-1 max-h-56 w-x overflow-auto rounded-md bg-white py-1 text-base ring-1 shadow-lg ring-black/5 focus:outline-hidden data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
+            className="absolute top-9 z-10 mt-1 mb-1 max-h-56 w-sx overflow-auto rounded-md bg-white py-2 text-base ring-1 shadow-lg ring-black/5 focus:outline-hidden data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
           >
             {categoryList.map((category) => (
-              <>
-                <ListboxOption
-                  key={category.id}
-                  value={category}
-                  className="group relative cursor-default py-2 pr-9 pl-3 text-gray-900 select-none data-focus:bg-indigo-600 data-focus:text-white data-focus:outline-hidden"
-                  onMouseEnter={() => handleCategoryFocus(category)}
-                >
-                  <div className="flex items-center">
-                    <span className="ml-3 block truncate font-normal group-data-selected:font-semibold">
+              <ListboxOption key={category.id} value={category} as={Fragment}>
+                {({ focus, selected }) => (
+                  <div
+                    className={`flex items-center w-full py-1 pl-1 pr-10 cursor-pointer ${
+                      (focus ||
+                        displaySubCategory?.category.id === category.id) &&
+                      'rounded-md outline-2 -outline-offset-2 outline-indigo-600'
+                    }`}
+                    onMouseEnter={(e) => {
+                      handleCategoryFocusOn(e, category)
+                    }}
+                    onMouseDown={(e) => {
+                      handleCategoryClick(e, category)
+                    }}
+                  >
+                    <CheckIcon
+                      className={`size-5 ${!selected && 'invisible'}`}
+                    />
+                    <span className="block truncate font-normal group-data-selected:font-semibold">
                       {category.name}
                     </span>
                   </div>
-                </ListboxOption>
-              </>
+                )}
+              </ListboxOption>
             ))}
           </ListboxOptions>
         </div>
       </Listbox>
+      {displaySubCategory?.category?.subCategory && (
+        <div
+          className="z-20 cursor-pointer"
+          style={{
+            position: 'fixed',
+            top: displaySubCategory.position.top,
+            left: displaySubCategory.position.right,
+          }}
+          tabIndex={-1}
+        >
+          {displaySubCategory.category.subCategory.map((subCategory) => (
+            <div
+              key={subCategory.id}
+              className={`py-1 pl-2 pr-5 bg-white text-gray-900${
+                focusedSubCategory?.id === subCategory.id &&
+                'rounded-md outline-2 -outline-offset-2 outline-indigo-600'
+              }`}
+              onMouseDown={() => {
+                console.log('handleSubCategoryClick')
+                handleSubCategoryClick(subCategory)
+              }}
+              onMouseEnter={() => {
+                handleSubCategoryFocusOn(subCategory)
+              }}
+              onMouseLeave={() => {
+                handleSubCategoryFocusOff()
+              }}
+            >
+              <div className="flex items-center">
+                <CheckIcon
+                  className={`size-5 ${
+                    selectedSubCategory?.id === subCategory.id
+                      ? ''
+                      : 'invisible'
+                  }`}
+                />
+                <span className="block truncate font-normal">
+                  {subCategory.name}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </>
   )
 }
