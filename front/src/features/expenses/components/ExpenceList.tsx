@@ -1,25 +1,28 @@
 'use client'
 
 import React, { useState, Dispatch, SetStateAction } from 'react'
-import { useTransactionModalContext } from '@/contexts/TransactionModalContext'
+import {
+  CrudType,
+  useTransactionModalContext,
+} from '@/contexts/TransactionModalContext'
 
-const IncomeList = () => {
+const ExpenseList = () => {
   const { openModal } = useTransactionModalContext()
   // 仮のデータ
-  const incomesList = [
+  const ExpenseList = [
     {
       id: 1,
       date: '2021/01/01',
-      category: '給料',
-      amount: 1000,
-      memo: 'お年玉',
+      category: '食費 > 食料品',
+      amount: 5000,
+      memo: '夕食',
     },
     {
       id: 2,
       date: '2021/01/02',
-      category: 'その他',
-      amount: 2000,
-      memo: 'お年玉',
+      category: '交通費 > 電車',
+      amount: 1000,
+      memo: '通勤',
     },
   ]
   return (
@@ -35,15 +38,15 @@ const IncomeList = () => {
           </tr>
         </thead>
         <tbody className="">
-          {incomesList.map((income) => (
+          {ExpenseList.map((expense) => (
             <tr
-              key={income.id}
+              key={expense.id}
               className="h-10 [&:not(:last-child)]:border-b [&:not(:last-child)]:border-gray-200"
             >
-              <td className="p-4">{income.date}</td>
-              <td className="p-4">{income.category}</td>
-              <td className="p-4">{income.amount}</td>
-              <td className="p-4">{income.memo}</td>
+              <td className="p-4">{expense.date}</td>
+              <td className="p-4">{expense.category}</td>
+              <td className="p-4">{expense.amount}</td>
+              <td className="p-4">{expense.memo}</td>
               <td className="p-4">
                 <div className="flex gap-2">
                   <button
@@ -68,4 +71,4 @@ const IncomeList = () => {
   )
 }
 
-export default IncomeList
+export default ExpenseList
