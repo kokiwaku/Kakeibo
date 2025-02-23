@@ -1,13 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect, Fragment } from 'react'
-import {
-  Label,
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-} from '@headlessui/react'
+import { useState, useCallback, useEffect } from 'react'
 import { ChevronDownIcon, CheckIcon } from '@heroicons/react/16/solid'
 import { useModalContext } from '@/features/expenses/contexts/ModalContext'
 
@@ -16,6 +9,13 @@ const CategorySelector = () => {
     id: number
     name: string
     subCategory?: { id: number; name: string }[]
+  }
+  type DisplayCategoryType = {
+    category: CategoryType[]
+    position: {
+      top: number
+      left: number
+    }
   }
   type SubCategoryType = {
     id: number
@@ -201,12 +201,33 @@ const CategorySelector = () => {
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
     null,
   )
+  const [displayCategory, setDisplayCategory] =
+    useState<DisplayCategoryType | null>(null)
   const [selectedSubCategory, setSelectedSubCategory] =
     useState<SubCategoryType | null>(null)
   const [displaySubCategory, setDisplaySubCategory] =
     useState<DisplaySubCategoryType | null>(null)
   const [focusedSubCategory, setFocusedSubCategory] =
     useState<SubCategoryType | null>(null)
+
+  /**
+   * カテゴリ選択フォームクリック時
+   */
+  const handleCategorySelectorOpen = (
+    event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+  ) => {
+    // セレクトボックスを表示
+    // セレクトボックスの表示位置を設定
+    const selectorRect = event.currentTarget.getBoundingClientRect()
+    const modalRefRect = modalRef.current.getBoundingClientRect()
+    setDisplayCategory({
+      category: categoryList,
+      position: {
+        top: selectorRect.bottom - modalRefRect.top + 5,
+        left: selectorRect.left - modalRefRect.left,
+      },
+    })
+  }
 
   /**
    * カテゴリフォーカス時
@@ -290,79 +311,83 @@ const CategorySelector = () => {
   }, [selectedCategory, selectedSubCategory])
 
   /**
-   * サブカテゴリーの表示が残ることがあるのでクリックイベントを検知して削除
+   * カテゴリー・サブカテゴリーの表示が残ることがあるのでクリックイベントを検知して削除
    */
   const handleClickOutside = () => {
+    setDisplayCategory(null)
     setDisplaySubCategory(null)
   }
   document.addEventListener('mousedown', handleClickOutside)
 
   return (
     <>
-      <Listbox value={selectedCategory} onChange={setSelectedCategory}>
-        <Label>カテゴリ</Label>
-        <div className="mt-2 relative category-selector">
-          <ListboxButton className="grid w-full rounded-md bg-white py-1.5 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-            <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
-              <span className="block truncate">{categoryLabel}</span>
-            </span>
-            <ChevronDownIcon
-              aria-hidden="true"
-              className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4"
-            />
-          </ListboxButton>
-          <ListboxOptions
-            transition
-            className="absolute top-9 z-10 mt-1 mb-1 max-h-56 w-sx overflow-auto rounded-md bg-white py-2 text-base ring-1 shadow-lg ring-black/5 focus:outline-hidden data-leave:transition data-leave:duration-100 data-leave:ease-in data-closed:data-leave:opacity-0 sm:text-sm"
-          >
-            {categoryList.map((category) => (
-              <ListboxOption key={category.id} value={category} as={Fragment}>
-                {({ focus, selected }) => (
-                  <div
-                    className={`flex items-center w-full py-1 pl-1 pr-10 cursor-pointer ${
-                      (focus ||
-                        displaySubCategory?.category.id === category.id) &&
-                      'rounded-md outline-2 -outline-offset-2 outline-indigo-600'
-                    }`}
-                    onMouseEnter={(e) => {
-                      handleCategoryFocusOn(e, category)
-                    }}
-                    onMouseDown={(e) => {
-                      handleCategoryClick(e, category)
-                    }}
-                  >
-                    <CheckIcon
-                      className={`size-5 ${!selected && 'invisible'}`}
-                    />
-                    <span className="block truncate font-normal group-data-selected:font-semibold">
-                      {category.name}
-                    </span>
-                  </div>
-                )}
-              </ListboxOption>
-            ))}
-          </ListboxOptions>
+      <div className="flex flex-col gap-0.5 w-full">
+        <div>カテゴリ</div>
+        {/* 選択フォーム */}
+        <div
+          className="grid w-full rounded-md bg-white py-1.5 pr-2 pl-3 text-left text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+          onClick={(e) => handleCategorySelectorOpen(e)}
+        >
+          <span className="col-start-1 row-start-1 flex items-center gap-3 pr-6">
+            <span className="block truncate">{categoryLabel}</span>
+          </span>
+          <ChevronDownIcon
+            aria-hidden="true"
+            className="col-start-1 row-start-1 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+          />
         </div>
-      </Listbox>
+      </div>
+      {/* 選択フォームオプション */}
+      {displayCategory?.category && (
+        <div
+          className="z-10 max-h-56 w-sx overflow-auto bg-white py-2 text-base ring-1 shadow-lg ring-black/5 rounded-md sm:text-sm"
+          style={{
+            position: 'fixed',
+            top: displayCategory.position.top,
+            left: displayCategory.position.left,
+          }}
+        >
+          {displayCategory?.category.map((category) => (
+            <div
+              key={category.id}
+              className={`flex items-center py-1 pl-1 pr-10 cursor-pointer ${
+                displaySubCategory?.category.id === category.id &&
+                'rounded-md outline-2 -outline-offset-2 outline-indigo-600'
+              }`}
+              onMouseEnter={(e) => {
+                handleCategoryFocusOn(e, category)
+              }}
+              onMouseDown={(e) => {
+                handleCategoryClick(e, category)
+              }}
+            >
+              <CheckIcon
+                className={`size-5 ${!(selectedCategory?.id === category.id) && 'invisible'}`}
+              />
+              <span className="block truncate font-normal group-data-selected:font-semibold">
+                {category.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
       {displaySubCategory?.category?.subCategory && (
         <div
-          className="z-20 cursor-pointer"
+          className="z-20 cursor-pointer rounded-md max-h-56 w-sx overflow-auto bg-white py-2 text-base ring-1 shadow-lg ring-black/5 sm:text-sm"
           style={{
             position: 'fixed',
             top: displaySubCategory.position.top,
             left: displaySubCategory.position.right,
           }}
-          tabIndex={-1}
         >
           {displaySubCategory.category.subCategory.map((subCategory) => (
             <div
               key={subCategory.id}
-              className={`py-1 pl-2 pr-5 bg-white text-gray-900${
+              className={`py-1 pl-2 pr-5 bg-white text-gray-900 ${
                 focusedSubCategory?.id === subCategory.id &&
                 'rounded-md outline-2 -outline-offset-2 outline-indigo-600'
               }`}
               onMouseDown={() => {
-                console.log('handleSubCategoryClick')
                 handleSubCategoryClick(subCategory)
               }}
               onMouseEnter={() => {
