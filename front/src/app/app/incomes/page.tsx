@@ -1,13 +1,33 @@
 'use client'
 
-import IncomeModal from '@/features/incomes/components/IncomeModal'
-import IncomeList from '@features/incomes/components/IncomeList'
+import TransactionHeader from '@components/TransactionHeader'
+import TransactionModal from '@components/TransactionModal'
+import TransactionList from '@components/TransactionList'
+import { TransactionItemType } from '@/types/TransactionType'
 
 const Page = () => {
+  // TODO 仮 データ表示用
+  const transactionList: TransactionItemType[] = [
+    {
+      id: 1,
+      date: new Date('2021/01/01'),
+      category: '給料',
+      amount: 1000,
+      memo: 'お年玉',
+    },
+    {
+      id: 2,
+      date: new Date('2021/01/02'),
+      category: 'その他',
+      amount: 2000,
+      memo: 'お年玉',
+    },
+  ]
   return (
-    <main className="flex flex-col gap-17 py-25 px-10">
-      <IncomeList />
-      <IncomeModal />
+    <main className="flex flex-col gap-10 py-25 px-10">
+      <TransactionHeader />
+      <TransactionList transactionList={transactionList} />
+      <TransactionModal />
     </main>
   )
 }

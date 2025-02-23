@@ -8,13 +8,30 @@ import {
   DialogTitle,
 } from '@headlessui/react'
 import {
-  ModalType,
-  useModalContext,
-} from '@/features/incomes/contexts/ModalContext'
-import IncomeModalForm from '@/features/incomes/components/incomeModal/IncomeModalForm'
+  CrudType,
+  useTransactionModalContext,
+} from '@/contexts/TransactionModalContext'
+import ModalForm from './TransactionModal/ModalForm'
 
-const IncomeModal = () => {
-  const { isOpenModal, openModal, closeModal, modalType } = useModalContext()
+const TransactionModal = () => {
+  const {
+    isOpenModal,
+    openModal,
+    closeModal,
+    crudType,
+    modalRef,
+    transactionType,
+  } = useTransactionModalContext()
+
+  let transactionTitle = ''
+  switch (transactionType) {
+    case 'incomes':
+      transactionTitle = '収入'
+      break
+    case 'expenses':
+      transactionTitle = '支出'
+      break
+  }
 
   return (
     <Dialog open={isOpenModal} onClose={closeModal} className="relative z-10">
@@ -27,11 +44,12 @@ const IncomeModal = () => {
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
           <DialogPanel
             transition
-            className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
+            className="relative transform rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
+            ref={modalRef}
           >
-            {modalType === 'delete'
-              ? () => <DeleteForm />
-              : () => <UpsertForm />}
+            {crudType === 'delete'
+              ? () => <DeleteForm transactionTitle={transactionTitle} />
+              : () => <UpsertForm transactionTitle={transactionTitle} />}
           </DialogPanel>
         </div>
       </div>
@@ -39,10 +57,10 @@ const IncomeModal = () => {
   )
 }
 
-export default IncomeModal
+export default TransactionModal
 
-const UpsertForm = () => {
-  const { closeModal, modalType } = useModalContext()
+const UpsertForm = ({ transactionTitle }: { transactionTitle: string }) => {
+  const { closeModal, crudType } = useTransactionModalContext()
   const handleCancel = () => {
     // TODO キャンセル操作
     closeModal()
@@ -58,10 +76,10 @@ const UpsertForm = () => {
         <div className="sm:flex sm:items-start">
           <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
             <DialogTitle as="h2" className="text-lg weight-bold">
-              {modalType === 'update' ? '収入を編集する' : '収入を登録する'}
+              {`${transactionTitle}を${crudType === 'update' ? '編集する' : '登録する'}`}
             </DialogTitle>
             <div className="mt-2">
-              <IncomeModalForm />
+              <ModalForm />
             </div>
           </div>
         </div>
@@ -87,8 +105,8 @@ const UpsertForm = () => {
   )
 }
 
-const DeleteForm = () => {
-  const { closeModal, modalType } = useModalContext()
+const DeleteForm = ({ transactionTitle }: { transactionTitle: string }) => {
+  const { closeModal, crudType } = useTransactionModalContext()
   const handleCancel = () => {
     // TODO キャンセル操作
     closeModal()
@@ -104,7 +122,7 @@ const DeleteForm = () => {
         <div className="sm:flex sm:items-start">
           <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
             <DialogTitle as="h2" className="text-lg weight-bold">
-              収入を削除しますか???
+              {`${transactionTitle}を削除しますか???`}
             </DialogTitle>
           </div>
         </div>

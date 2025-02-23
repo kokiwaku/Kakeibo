@@ -3,21 +3,21 @@
 import MonthYearPicker from '@components/MonthYearPicker'
 import { useTransactionModalContext } from '@/contexts/TransactionModalContext'
 
-const ExpenseHeader = () => {
-  const { openModal } = useTransactionModalContext()
-
+const TransactionHeader = () => {
+  const { openModal, transactionType } = useTransactionModalContext()
+  const transactionTypeStr = transactionType === 'incomes' ? '収入' : '支出'
   return (
     <div className="flex gap-10">
-      <h1 className="text-2xl font-bold">支出一覧</h1>
+      <h1 className="text-2xl font-bold">{`${transactionTypeStr}一覧`}</h1>
       <MonthYearPicker />
       <button
         className="bg-blue-500 text-white hover:bg-blue-200 rounded-md px-4 py-2 cursor-pointer"
         onClick={() => openModal('create')}
       >
-        支出を追加
+        {`${transactionTypeStr}を追加`}
       </button>
     </div>
   )
 }
 
-export default ExpenseHeader
+export default TransactionHeader

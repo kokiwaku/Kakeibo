@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { Label, Field, Textarea } from '@headlessui/react'
-import CategorySelector from './expenseModalForm/CategorySelector'
+import CategorySelector from './ModalForm/CategorySelector'
 
-const ExpenseModalForm = () => {
+const ModalForm = () => {
   const [date, setDate] = useState<string>('')
   const [amount, setAmount] = useState<string>('')
 
@@ -64,4 +64,4 @@ const ExpenseModalForm = () => {
   )
 }
 
-export default ExpenseModalForm
+export default ModalForm

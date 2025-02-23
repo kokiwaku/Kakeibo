@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState, Dispatch, SetStateAction } from 'react'
-import { useModalContext } from '@/features/incomes/contexts/ModalContext'
+import { useTransactionModalContext } from '@/contexts/TransactionModalContext'
 
 const IncomeList = () => {
-  const { openModal } = useModalContext()
+  const { openModal } = useTransactionModalContext()
   // 仮のデータ
   const incomesList = [
     {
@@ -24,15 +24,6 @@ const IncomeList = () => {
   ]
   return (
     <>
-      <div className="flex gap-10">
-        <h1 className="text-2xl font-bold">収入一覧</h1>
-        <button
-          className="bg-blue-500 text-white hover:bg-blue-200 rounded-md px-4 py-2 cursor-pointer"
-          onClick={() => openModal('create')}
-        >
-          収入を追加
-        </button>
-      </div>
       <table className="table-auto w-full text-left">
         <thead>
           <tr>
