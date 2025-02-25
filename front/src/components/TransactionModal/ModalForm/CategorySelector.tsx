@@ -175,7 +175,7 @@ const CategorySelector = () => {
       {/* 選択フォームオプション */}
       {displayCategory?.category && (
         <div
-          className="z-10 max-h-56 w-sx overflow-auto bg-white py-2 text-base ring-1 shadow-lg ring-black/5 rounded-md sm:text-sm"
+          className="z-10 max-h-56 overflow-auto bg-white py-2 text-base ring-1 shadow-lg ring-black/5 rounded-md sm:text-sm"
           style={{
             position: 'fixed',
             top: displayCategory.position.top,
