@@ -5,7 +5,7 @@ import CategoriesList from '@/features/categories/components/categoriesContent/C
 
 const CategoriesContent = () => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 bg-white rounded-md">
       <TransactionToggleTab />
       <CategoriesList />
     </div>

@@ -5,7 +5,7 @@ import CategoriesContent from '@features/categories/CategoriesContent'
 const Page = () => {
   return (
     <>
-      <main className="flex flex-col gap-7 py-25 px-10">
+      <main className="flex flex-col gap-7">
         <CategoriesHeader />
         <CategoriesContent />
       </main>

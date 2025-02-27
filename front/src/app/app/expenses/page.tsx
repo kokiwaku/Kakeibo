@@ -25,7 +25,7 @@ const Page = () => {
     },
   ]
   return (
-    <main className="flex flex-col gap-10 py-25 px-10">
+    <main className="flex flex-col gap-10">
       <TransactionHeader />
       <TransactionList transactionList={transactionList} />
       <TransactionModal />
