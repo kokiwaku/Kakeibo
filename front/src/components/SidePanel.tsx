@@ -36,7 +36,7 @@ const SidePanel = () => {
     },
   ]
   return (
-    <aside className="w-64 shadow-md flex flex-col gap-1.5">
+    <aside className="w-64 flex flex-col gap-1.5 bg-white">
       <div className="p-4 bg-blue-500 text-white">
         <h1 className="text-2xl font-bold">MoneyFlow</h1>
       </div>

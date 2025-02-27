@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import React, { ReactNode } from 'react'
 import SidePanel from '@/components/SidePanel'
-import { ModalProvider } from '@/features/incomes/contexts/ModalContext'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -10,9 +9,11 @@ export const metadata: Metadata = {
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex h-screen gb-background">
+    <div className="flex bg-gray-100 min-h-screen">
       <SidePanel />
-      <div className="flex flex-1 flex-col">{children}</div>
+      <div className="flex flex-1 flex-col py-15 px-10 bg-gray-100">
+        {children}
+      </div>
     </div>
   )
 }

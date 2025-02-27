@@ -1,13 +1,15 @@
 import React from 'react'
+import CategoriesHeader from '@features/categories/CategoriesHeader'
+import CategoriesContent from '@features/categories/CategoriesContent'
 
 const Page = () => {
   return (
-    <div className="py-18 px-8">
-      <h1 className="text-2xl font-bold">カテゴリ一覧</h1>
-      <div className="mt-8">
-        <p>ページの内容</p>
-      </div>
-    </div>
+    <>
+      <main className="flex flex-col gap-7">
+        <CategoriesHeader />
+        <CategoriesContent />
+      </main>
+    </>
   )
 }
 export default Page
