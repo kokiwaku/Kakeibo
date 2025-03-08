@@ -29,7 +29,7 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: next-ts-journey
+      MYSQL_DATABASE: kakeibo
       MYSQL_USER: general
       MYSQL_PASSWORD: general
     volumes:
