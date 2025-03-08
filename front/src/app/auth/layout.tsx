@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
+    <div className="flex h-screen w-screen flex-col items-center justify-center">
       {children}
     </div>
   )
