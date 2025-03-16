@@ -3,43 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Infrastructure\Eloquent\User;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\UseCase\AuthResigterUseCase;
+use App\UseCase\AuthResigterUseCaseRequest;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\AuthenticationException;
+use App\Domain\Auth\Model\Value\Password;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request, AuthResigterUseCase $authResigterUseCase)
     {
-        $params = $request->all();
-        $validator = Validator::make($params, [
-            'name' => 'required|string',
-            'email' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
-        ]);
+        $params = $request->validated();
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], status: 400);
-        }
+        $authResigterUseCaseRequest = new AuthResigterUseCaseRequest(
+            email: $params['email'],
+            name: $params['name'],
+            password: new Password($params['password']),
+        );
+        $authResigterResponse = $authResigterUseCase->execute($authResigterUseCaseRequest);
 
-        $user = User::create([
-            'email' => $params['email'],
-            'name' => $params['name'],
-            'password' => Hash::make($params['password']),
-        ]);
-
-        $credentials = [
-            'email' => $params['email'],
-            'password' => $params['password'],
-        ];
-        $token = Auth::attempt(credentials: $credentials);
-
-        $response = response()->json(['user' => $user], 200);
-        $response->cookie('auth_token', $token, 60, '/', null, false, true);
+        $response = response()->json(['user' => $authResigterResponse->user], 200);
+        $response->cookie('auth_token', $authResigterResponse->token, 60, '/', null, false, true);
 
         return $response;
     }

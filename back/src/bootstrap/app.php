@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\SetAuthTokenFromCookieMiddleware;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,4 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
     })
     ->withExceptions(function (Exceptions $exceptions) {
+        // apiの例外処理
+        $exceptions->render(function (\Illuminate\Validation\ValidationException $e, Request $request) {
+            return response()->json([
+                'status' => 'error',
+                'error' => [
+                    'type' => 'validation_error',
+                    'message' => $e->errors(),
+                ]
+            ], 422);
+        });
     })->create();
