@@ -1,12 +1,13 @@
 <?php
 
-namespace App\UseCase;
+namespace App\UseCase\Auth;
 
-use App\UseCase\AuthResigterUseCaseRequest;
+use App\UseCase\Auth\RegisterUseCaseRequest;
+use App\UseCase\Auth\RegisterUseCaseResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Domain\Auth\Repository\UserRepositoryInterface;
 
-class AuthResigterUseCase
+class RegisterUseCase
 {
 
     public function __construct(
@@ -15,7 +16,7 @@ class AuthResigterUseCase
     {
     }
 
-    public function execute(AuthResigterUseCaseRequest $request): AuthResigterUseCaseResponse
+    public function execute(RegisterUseCaseRequest $request): RegisterUseCaseResponse
     {
         // ユーザーを登録
         $user = $this->userRepository->create($request->email, $request->name, $request->password->value);
@@ -27,6 +28,6 @@ class AuthResigterUseCase
         ];
         $token = Auth::attempt(credentials: $credentials);
 
-        return new AuthResigterUseCaseResponse(user: $user, token: $token);
+        return new RegisterUseCaseResponse(user: $user, token: $token);
     }
 }

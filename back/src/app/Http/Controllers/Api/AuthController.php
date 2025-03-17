@@ -4,29 +4,53 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\UseCase\AuthResigterUseCase;
-use App\UseCase\AuthResigterUseCaseRequest;
+use App\Http\Requests\Auth\LoginRequest;
+use App\UseCase\Auth\LoginUseCaseRequest;
+use App\UseCase\Auth\RegisterUseCase;
+use App\UseCase\Auth\RegisterUseCaseRequest;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\AuthenticationException;
 use App\Domain\Auth\Model\Value\Password;
+use App\UseCase\Auth\LoginUseCase;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $request, AuthResigterUseCase $authResigterUseCase)
+    public function register(RegisterRequest $request, RegisterUseCase $registerUseCase)
     {
         $params = $request->validated();
 
-        $authResigterUseCaseRequest = new AuthResigterUseCaseRequest(
+        $registerUseCaseRequest = new RegisterUseCaseRequest(
             email: $params['email'],
             name: $params['name'],
             password: new Password($params['password']),
         );
-        $authResigterResponse = $authResigterUseCase->execute($authResigterUseCaseRequest);
+        $resigterResponse = $registerUseCase->execute($registerUseCaseRequest);
 
-        $response = response()->json(['user' => $authResigterResponse->user], 200);
-        $response->cookie('auth_token', $authResigterResponse->token, 60, '/', null, false, true);
+        $response = response()->json(['user' => $resigterResponse->user], 200);
+        $response->cookie('auth_token', $resigterResponse->token, 60, '/', null, false, true);
 
+        return $response;
+    }
+
+    public function login(LoginRequest $request, LoginUseCase $loginUseCase)
+    {
+        $params = $request->validated();
+
+        try {
+            $loginUseCaseRequest = new LoginUseCaseRequest($params['email'], new Password($params['password']));
+            $loginUseCaseResponse = $loginUseCase->execute($loginUseCaseRequest);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'error' => [
+                    'type' => 'login_error',
+                    'message' => $e->getMessage(),
+                ]
+            ], 403);
+        }
+
+        $response = response()->json()->cookie('auth_token', $loginUseCaseResponse->token, 60, '/', null, false, true);
         return $response;
     }
 
@@ -45,28 +69,6 @@ class AuthController extends Controller
 
         // 認証成功
         return response()->json(null, 204);
-    }
-
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function login()
-    {
-        $credentials = request(['email', 'password']);
-
-        try {
-            $token = Auth::attempt($credentials);
-            if (! $token) {
-                return response()->json(['error' => 'Unauthorized'], 401);
-            }
-        } catch (Exception $e) {
-            return response()->json(['error' => 'Cloud not create token'], 501);
-        }
-
-        $response = response()->json()->cookie('auth_token', $token, 60, '/', null, false, true);
-        return $response;
     }
 
     /**

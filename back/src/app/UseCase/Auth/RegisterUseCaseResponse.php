@@ -1,10 +1,10 @@
 <?php
 
-namespace App\UseCase;
+namespace App\UseCase\Auth;
 
 use App\Domain\Auth\Model\Entity\User;
 
-class AuthResigterUseCaseResponse
+class RegisterUseCaseResponse
 {
     public function __construct(
         public readonly User $user,
