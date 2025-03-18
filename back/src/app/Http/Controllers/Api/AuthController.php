@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\AuthenticationException;
 use App\Domain\Auth\Model\Value\Password;
 use App\UseCase\Auth\LoginUseCase;
+use App\UseCase\Auth\ValidateTokenUseCase;
 
 class AuthController extends Controller
 {
@@ -59,12 +60,18 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function validateToken()
+    public function validateToken(ValidateTokenUseCase $validateTokenUseCase)
     {
         try {
-            $user = Auth::authenticate();
+            $validateTokenUseCase->execute();
         } catch (AuthenticationException $e) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json([
+                'status' => 'error',
+                'error' => [
+                    'type' => 'invalidate_token',
+                    'message' => $e->getMessage(),
+                ]
+            ], 403);
         }
 
         // 認証成功
