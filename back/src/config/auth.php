@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Auth\Model\Entity\User;
+use App\Infrastructure\Auth\Eloquent\User;
 
 return [
 

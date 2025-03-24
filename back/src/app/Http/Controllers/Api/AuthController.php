@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Domain\Auth\Exception\RegisterUseCaseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\UseCase\Auth\LoginUseCaseRequest;
+use App\UseCase\Auth\LogoutUseCaseRequest;
 use App\UseCase\Auth\RegisterUseCase;
 use App\UseCase\Auth\RegisterUseCaseRequest;
 use Exception;
@@ -13,7 +15,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\AuthenticationException;
 use App\Domain\Auth\Model\Value\Password;
 use App\UseCase\Auth\LoginUseCase;
+use App\UseCase\Auth\LogoutUseCase;
 use App\UseCase\Auth\ValidateTokenUseCase;
+use Throwable;
 
 class AuthController extends Controller
 {
@@ -26,9 +30,35 @@ class AuthController extends Controller
             name: $params['name'],
             password: new Password($params['password']),
         );
-        $resigterResponse = $registerUseCase->execute($registerUseCaseRequest);
+        try {
+            $resigterResponse = $registerUseCase->execute($registerUseCaseRequest);
+        } catch (Throwable $e) {
+            if ($e instanceof RegisterUseCaseException) {
+                return response()->json([
+                    'status' => 'error',
+                    'error' => [
+                        'type' => $e->getErrorType(),
+                        'message' => $e->getMessage(),
+                    ]
+                ], status: $e->getCode());
+            }
 
-        $response = response()->json(['user' => $resigterResponse->user], 200);
+            return response()->json([
+                'status' => 'error',
+                'error' => [
+                    'type' => 'server_error',
+                    'message' => 'An unexpected error occurred.',
+                ]
+            ], 500);
+        }
+
+        // 正常系
+        $response = response()->json([
+            'status' => 'success',
+            'data' => [
+                'user' => $resigterResponse->user,
+            ],
+        ], 200);
         $response->cookie('auth_token', $resigterResponse->token, 60, '/', null, false, true);
 
         return $response;
@@ -48,7 +78,7 @@ class AuthController extends Controller
                     'type' => 'login_error',
                     'message' => $e->getMessage(),
                 ]
-            ], 403);
+            ], 401);
         }
 
         $response = response()->json()->cookie('auth_token', $loginUseCaseResponse->token, 60, '/', null, false, true);
@@ -71,7 +101,7 @@ class AuthController extends Controller
                     'type' => 'invalidate_token',
                     'message' => $e->getMessage(),
                 ]
-            ], 403);
+            ], 401);
         }
 
         // 認証成功
@@ -83,10 +113,13 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(LogoutUseCase $logoutUseCase)
     {
-        Auth::invalidate(Auth::getToken());
+        $token = Auth::getToken();
+        $logoutUseCaseRequest = new LogoutUseCaseRequest($token);
+        $logoutUseCase->execute($logoutUseCaseRequest);
 
-        return response()->json(['message' => 'Successfully logged out']);
+        // ログアウト成功
+        return response()->json(null, 204);
     }
 }
