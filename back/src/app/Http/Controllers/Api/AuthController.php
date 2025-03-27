@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Domain\Auth\Exception\LoginUseCaseException;
+use App\Domain\Auth\Exception\LogoutUseCaseException;
 use App\Domain\Auth\Exception\RegisterUseCaseException;
 use App\Domain\Auth\Exception\ValidateTokenUseCaseException;
 use App\Http\Controllers\Controller;
@@ -17,6 +18,7 @@ use App\Domain\Auth\Model\Value\Password;
 use App\UseCase\Auth\LoginUseCase;
 use App\UseCase\Auth\LogoutUseCase;
 use App\UseCase\Auth\ValidateTokenUseCase;
+use App\UseCase\Auth\ValidateTokenUseCaseRequest;
 use Throwable;
 
 class AuthController extends Controller
@@ -103,7 +105,9 @@ class AuthController extends Controller
     public function validateToken(ValidateTokenUseCase $validateTokenUseCase)
     {
         try {
-            $validateTokenUseCase->execute();
+            $token = Auth::getToken();
+            $validateTokenUseCaseRequest = new ValidateTokenUseCaseRequest($token);
+            $validateTokenUseCase->execute($validateTokenUseCaseRequest);
         } catch (Throwable $e) {
             if ($e instanceof ValidateTokenUseCaseException) {
                 return response()->json([
@@ -135,9 +139,29 @@ class AuthController extends Controller
      */
     public function logout(LogoutUseCase $logoutUseCase)
     {
-        $token = Auth::getToken();
-        $logoutUseCaseRequest = new LogoutUseCaseRequest($token);
-        $logoutUseCase->execute($logoutUseCaseRequest);
+        try {
+            $token = Auth::getToken();
+            $logoutUseCaseRequest = new LogoutUseCaseRequest($token);
+            $logoutUseCase->execute($logoutUseCaseRequest);
+        } catch (Throwable $e) {
+            if ($e instanceof LogoutUseCaseException) {
+                return response()->json([
+                    'status' => 'error',
+                    'error' => [
+                        'type' => $e->getErrorType(),
+                        'message' => $e->getMessage(),
+                    ]
+                ], status: $e->getCode());
+            }
+
+            return response()->json([
+                'status' => 'error',
+                'error' => [
+                    'type' => 'server_error',
+                    'message' => 'An unexpected error occurred.',
+                ]
+            ], 500);
+        }
 
         // ログアウト成功
         return response()->json(null, 204);
