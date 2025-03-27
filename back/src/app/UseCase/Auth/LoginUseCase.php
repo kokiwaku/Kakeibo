@@ -2,9 +2,8 @@
 
 namespace App\UseCase\Auth;
 
-use Illuminate\Auth\AuthenticationException;
+use App\Domain\Auth\Exception\LoginUseCaseException;
 use Illuminate\Support\Facades\Auth;
-use App\Domain\Auth\Repository\UserRepositoryInterface;
 
 class LoginUseCase
 {
@@ -17,7 +16,7 @@ class LoginUseCase
             'password' => $request->password->value,
         ]);
         if (! $token) {
-            throw new AuthenticationException('Login failed: Invalid email or password');
+            throw new LoginUseCaseException(LoginUseCaseException::LOGIN_FAILED, 'Invalid email or password.', code: 401);
         }
 
         return new LoginUseCaseResponse($token);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Domain\Auth\Exception\LoginUseCaseException;
 use App\Domain\Auth\Exception\RegisterUseCaseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -71,14 +72,24 @@ class AuthController extends Controller
         try {
             $loginUseCaseRequest = new LoginUseCaseRequest($params['email'], new Password($params['password']));
             $loginUseCaseResponse = $loginUseCase->execute($loginUseCaseRequest);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            if ($e instanceof LoginUseCaseException) {
+                return response()->json([
+                    'status' => 'error',
+                    'error' => [
+                        'type' => $e->getErrorType(),
+                        'message' => $e->getMessage(),
+                    ]
+                ], status: $e->getCode());
+            }
+
             return response()->json([
                 'status' => 'error',
                 'error' => [
-                    'type' => 'login_error',
-                    'message' => $e->getMessage(),
+                    'type' => 'server_error',
+                    'message' => 'An unexpected error occurred.',
                 ]
-            ], 401);
+            ], 500);
         }
 
         $response = response()->json()->cookie('auth_token', $loginUseCaseResponse->token, 60, '/', null, false, true);
