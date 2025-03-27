@@ -2,7 +2,9 @@
 
 namespace App\UseCase\Auth;
 
+use App\Domain\Auth\Exception\ValidateTokenUseCaseException;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class ValidateTokenUseCase
 {
@@ -13,6 +15,13 @@ class ValidateTokenUseCase
      */
     public function execute(): void
     {
-        Auth::authenticate();
+        try {
+            Auth::authenticate();
+        } catch (Throwable $e) {
+            throw new ValidateTokenUseCaseException(
+                errorType: ValidateTokenUseCaseException::INVALID_TOKEN,
+                message: 'Invalid token.',
+            );
+        }
     }
 }

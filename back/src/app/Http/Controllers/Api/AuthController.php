@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Domain\Auth\Exception\LoginUseCaseException;
 use App\Domain\Auth\Exception\RegisterUseCaseException;
+use App\Domain\Auth\Exception\ValidateTokenUseCaseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
@@ -11,9 +12,7 @@ use App\UseCase\Auth\LoginUseCaseRequest;
 use App\UseCase\Auth\LogoutUseCaseRequest;
 use App\UseCase\Auth\RegisterUseCase;
 use App\UseCase\Auth\RegisterUseCaseRequest;
-use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\AuthenticationException;
 use App\Domain\Auth\Model\Value\Password;
 use App\UseCase\Auth\LoginUseCase;
 use App\UseCase\Auth\LogoutUseCase;
@@ -105,14 +104,24 @@ class AuthController extends Controller
     {
         try {
             $validateTokenUseCase->execute();
-        } catch (AuthenticationException $e) {
+        } catch (Throwable $e) {
+            if ($e instanceof ValidateTokenUseCaseException) {
+                return response()->json([
+                    'status' => 'error',
+                    'error' => [
+                        'type' => $e->getErrorType(),
+                        'message' => $e->getMessage(),
+                    ]
+                ], status: $e->getCode());
+            }
+
             return response()->json([
                 'status' => 'error',
                 'error' => [
-                    'type' => 'invalidate_token',
-                    'message' => $e->getMessage(),
+                    'type' => 'server_error',
+                    'message' => 'An unexpected error occurred.',
                 ]
-            ], 401);
+            ], 500);
         }
 
         // 認証成功

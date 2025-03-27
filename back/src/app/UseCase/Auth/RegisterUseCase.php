@@ -46,7 +46,6 @@ class RegisterUseCase
                     errorType: RegisterUseCaseException::TOKEN_GENERATION_FAILED,
                     message: 'Failed to generate token.',
                 );
-
             }
 
             return new RegisterUseCaseResponse(user: $user, token: $token);
