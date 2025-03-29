@@ -18,7 +18,8 @@ class CreateTransactionTypesTable extends Migration
             $table->id();
             $table->string('name'); // '収入' or '支出'
             $table->string('slug')->unique(); // 'income' or 'expense' (システム内部での使用)
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
 
         // 初期データを挿入
@@ -26,14 +27,10 @@ class CreateTransactionTypesTable extends Migration
             [
                 'name' => '収入',
                 'slug' => 'income',
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
             [
                 'name' => '支出',
                 'slug' => 'expense',
-                'created_at' => now(),
-                'updated_at' => now(),
             ],
         ]);
     }

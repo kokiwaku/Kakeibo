@@ -19,7 +19,8 @@ class CreateParentCategoriesTable extends Migration
             $table->string('category_name');
             $table->foreignId('transaction_type_id')->constrained();
             $table->boolean('is_default_category')->default(false);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

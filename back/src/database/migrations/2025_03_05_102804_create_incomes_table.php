@@ -20,7 +20,8 @@ class CreateIncomesTable extends Migration
             $table->decimal('amount', 10, 2);
             $table->date('transaction_date');
             $table->text('description')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

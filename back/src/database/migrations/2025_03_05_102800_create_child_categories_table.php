@@ -20,7 +20,8 @@ class CreateChildCategoriesTable extends Migration
             $table->foreignId('transaction_type_id')->constrained();
             $table->foreignId('parent_category_id')->nullable()->constrained()->onDelete('set null'); // Foreign Key to parent_categories, nullable
             $table->boolean('is_default_category')->default(false);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 
