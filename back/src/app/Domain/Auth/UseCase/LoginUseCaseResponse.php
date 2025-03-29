@@ -1,8 +1,8 @@
 <?php
 
-namespace App\UseCase\Auth;
+namespace App\Domain\Auth\UseCase;
 
-class LogoutUseCaseRequest
+class LoginUseCaseResponse
 {
     public function __construct(
         public readonly string $token,

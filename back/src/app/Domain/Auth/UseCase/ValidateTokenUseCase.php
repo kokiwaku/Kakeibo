@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\Auth;
+namespace App\Domain\Auth\UseCase;
 
 use App\Domain\Auth\Exception\ValidateTokenUseCaseException;
 use Illuminate\Auth\AuthenticationException;

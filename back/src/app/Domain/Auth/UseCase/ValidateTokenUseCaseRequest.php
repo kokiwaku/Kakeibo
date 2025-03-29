@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\Auth;
+namespace App\Domain\Auth\UseCase;
 
 class ValidateTokenUseCaseRequest
 {
