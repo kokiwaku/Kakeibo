@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Domain\Auth\UseCase;
+namespace App\UseCase\Auth;
 
 use App\Domain\Auth\Exception\LoginUseCaseException;
-use App\Domain\Auth\UseCase\LoginUseCaseRequest;
-use App\Domain\Auth\UseCase\LoginUseCaseResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LoginUseCase

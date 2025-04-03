@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Auth\UseCase;
+namespace App\UseCase\Auth;
 
 use App\Domain\Auth\Exception\RegisterUseCaseException;
-use App\Domain\Auth\UseCase\RegisterUseCaseRequest;
-use App\Domain\Auth\UseCase\RegisterUseCaseResponse;
+use App\UseCase\Auth\RegisterUseCaseRequest;
+use App\UseCase\Auth\RegisterUseCaseResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Domain\Auth\Repository\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
