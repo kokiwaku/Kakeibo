@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Auth\UseCase;
+namespace App\UseCase\Auth;
 
 use App\Domain\Auth\Model\Entity\User;
 

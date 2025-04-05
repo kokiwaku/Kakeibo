@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Domain\Auth\UseCase;
+namespace App\UseCase\Auth;
 
 use App\Domain\Auth\Exception\LogoutUseCaseException;
-use App\Domain\Auth\UseCase\LogoutUseCaseRequest;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;

@@ -8,17 +8,17 @@ use App\Domain\Auth\Exception\RegisterUseCaseException;
 use App\Domain\Auth\Exception\ValidateTokenUseCaseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Domain\Auth\UseCase\LoginUseCaseRequest;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Domain\Auth\UseCase\LogoutUseCaseRequest;
-use App\Domain\Auth\UseCase\RegisterUseCase;
-use App\Domain\Auth\UseCase\RegisterUseCaseRequest;
+use App\UseCase\Auth\LoginUseCaseRequest;
+use App\UseCase\Auth\LogoutUseCaseRequest;
+use App\UseCase\Auth\RegisterUseCase;
+use App\UseCase\Auth\RegisterUseCaseRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Domain\Auth\Model\Value\Password;
-use App\Domain\Auth\UseCase\LoginUseCase;
-use App\Domain\Auth\UseCase\LogoutUseCase;
-use App\Domain\Auth\UseCase\ValidateTokenUseCase;
-use App\Domain\Auth\UseCase\ValidateTokenUseCaseRequest;
+use App\UseCase\Auth\LoginUseCase;
+use App\UseCase\Auth\LogoutUseCase;
+use App\UseCase\Auth\ValidateTokenUseCase;
+use App\UseCase\Auth\ValidateTokenUseCaseRequest;
 use Throwable;
 
 class AuthController extends Controller
