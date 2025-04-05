@@ -22,7 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 'status' => 'error',
                 'error' => [
                     'type' => 'validation_error',
-                    'message' => $e->errors(),
+                    'message' => [$e->getMessage()],
                 ]
             ], 422);
         });

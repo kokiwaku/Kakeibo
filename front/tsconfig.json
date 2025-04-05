@@ -11,9 +11,11 @@
     "paths": {
       "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
-      "@/app": ["src/app/*"],
       "@features/*": ["src/features/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@constants/*": ["src/constants/*"],
+      "@libs/*": ["src/libs/*"],
+      "@types/*": ["src/types/*"]
     },
     // 型定義ファイルの検索場所を指定
     "typeRoots": ["./node_modules/@types"],

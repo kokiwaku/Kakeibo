@@ -8,12 +8,12 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { CategoryType } from '@/types/CategoryType'
-import { TransactionType } from '@/types/TransactionType'
+import { Category } from '@/types/models/category'
+import { TransactionType } from '@/types/models/transaction'
 
 export type CategoryContextType = {
   transactionType: TransactionType
-  categoryList: CategoryType[]
+  categoryList: Category[]
   changeTransactionType: (transactionType: TransactionType) => void
 }
 
@@ -30,9 +30,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
 }) => {
   const [transactionType, setTransactionType] =
     useState<TransactionType>('incomes')
-  const [categoryList, setCategoryList] = useState<CategoryType[]>(
-    [] as CategoryType[],
-  )
+  const [categoryList, setCategoryList] = useState<Category[]>([] as Category[])
 
   const changeTransactionType = useCallback(
     (transactionType: TransactionType) => {
@@ -77,7 +75,7 @@ export const useCategoryContext = () => {
 /**
  * 仮データ
  */
-const expenseCategoryList: CategoryType[] = [
+const expenseCategoryList: Category[] = [
   {
     id: 1,
     name: '食費',
@@ -244,7 +242,7 @@ const expenseCategoryList: CategoryType[] = [
     subCategory: [],
   },
 ]
-const incomeCategoryList: CategoryType[] = [
+const incomeCategoryList: Category[] = [
   {
     id: 1,
     name: '給与',
