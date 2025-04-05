@@ -1,6 +1,6 @@
 'use client'
 
-import TransactionToggleTab from '@features/categories/components/categoriesContent/TransactionToggleTab'
+import TransactionToggleTab from '@/features/categories/components/categoriesContent/TransactionToggleTab'
 import CategoriesList from '@/features/categories/components/categoriesContent/CategoryList'
 
 const CategoriesContent = () => {

@@ -9,13 +9,7 @@
     "baseUrl": ".",
     // import文でのパスの解決方法を設定
     "paths": {
-      "@/*": ["src/*"],
-      "@components/*": ["src/components/*"],
-      "@features/*": ["src/features/*"],
-      "@utils/*": ["src/utils/*"],
-      "@constants/*": ["src/constants/*"],
-      "@libs/*": ["src/libs/*"],
-      "@types/*": ["src/types/*"]
+      "@/*": ["./src/*"]
     },
     // 型定義ファイルの検索場所を指定
     "typeRoots": ["./node_modules/@types"],

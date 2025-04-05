@@ -1,6 +1,6 @@
 import React from 'react'
-import CategoriesHeader from '@features/categories/CategoriesHeader'
-import CategoriesContent from '@features/categories/CategoriesContent'
+import CategoriesHeader from '@/features/categories/CategoriesHeader'
+import CategoriesContent from '@/features/categories/CategoriesContent'
 
 const Page = () => {
   return (

@@ -1,42 +1,13 @@
-import axios, { AxiosError, AxiosResponse } from 'axios'
-import { BACK_API_ENDPOINT } from '@constants/server'
+import axios, { AxiosError } from 'axios'
+import { BACK_API_ENDPOINT } from '@/constants/server'
 
-// レスポンスの型
-export type ResponseType<T = undefined> = {
-  code: number
-  data?: T
-  message?: Array<string>
-}
-export type GlobalAxiosResponse<T> = {
-  content?: T
-}
-
-export interface IErrorResponse {
-  code: string
-  config: any
-  message: string
-  request: any
-  response: {
-    config: any
-    data: {
-      error: {
-        type: string
-        message: Array<string>
-      }
-      status: number
-    }
-    headers: any
-    request: any
-    status: number
-    statusText: string
-  }
-}
-
+// axiosのインスタンスを作成
 const globalAxios = axios.create({
   baseURL: BACK_API_ENDPOINT,
   headers: {
     'Content-type': 'application/json',
   },
+  // クロスオリジンリクエストでクッキーを送信する
   withCredentials: true,
 })
 

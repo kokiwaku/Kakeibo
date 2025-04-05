@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import TransactionHeader from '@components/TransactionHeader'
-import TransactionModal from '@components/TransactionModal'
-import TransactionList from '@components/TransactionList'
+import TransactionHeader from '@/components/TransactionHeader'
+import TransactionModal from '@/components/TransactionModal'
+import TransactionList from '@/components/TransactionList'
 import { TransactionItem } from '@/types/models/transaction'
 
 const Page = () => {
