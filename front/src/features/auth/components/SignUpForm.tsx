@@ -45,7 +45,7 @@ const SignUpForm = () => {
           </div>
           <div className="rounded-md outline-1 -outline-offset-1 outline-gray-300">
             <input
-              type="password_confirmation"
+              type="password"
               className="w-full py-1 px-3"
               placeholder="パスワード（確認）"
               value={passwordConfirmation}
