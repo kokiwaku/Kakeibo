@@ -1,55 +1,22 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
-import { Event } from '@/types/event'
-import { redirect } from 'next/navigation'
-import { signUp } from '../apis/register-user'
+import { useSignUpContext } from '../contexts/SignUpContext'
 
 const SignUpForm = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordConfirmation, setPasswordConfirmation] = useState('')
-  const isAbleToSubmit =
-    email.trim() !== '' &&
-    password.trim() !== '' &&
-    passwordConfirmation.trim() !== ''
-  const [loading, setLoading] = useState(false)
-  const [errorMessages, setErrorMessages] = useState<Array<string>>([])
+  const {
+    email,
+    password,
+    passwordConfirmation,
+    isAbleToSubmit,
+    loading,
+    errorMessages,
+    handleSubmit,
+    handleClickLogin,
+    handleSetEmail,
+    handleSetPassword,
+    handleSetPasswordConfirmation,
+  } = useSignUpContext()
 
-  const router = useRouter()
-  const handleClickLogin = () => {
-    router.push('/auth/login')
-  }
-
-  // 何かしら入力されたらエラーメッセージを削除
-  useEffect(() => {
-    setErrorMessages([])
-  }, [email, password, passwordConfirmation])
-
-  const handleSubmit: Event['onSubmit'] = async (event) => {
-    event.preventDefault()
-
-    if (password !== passwordConfirmation) {
-      alert('パスワードが一致しません')
-      return
-    }
-
-    setLoading(true)
-
-    const response = await signUp(email, email, password)
-
-    setLoading(false)
-    // response check
-    if (response.code !== 200) {
-      setErrorMessages(response.message ?? [])
-      console.error(response.message)
-      return
-    }
-
-    // 認証OK
-    redirect('/app')
-  }
   return (
     <div className="flex flex-col gap-5">
       <form onSubmit={handleSubmit}>
@@ -64,7 +31,7 @@ const SignUpForm = () => {
               className="w-full py-1 px-3"
               placeholder="name@exapmle.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleSetEmail}
             />
           </div>
           <div className="rounded-md outline-1 -outline-offset-1 outline-gray-300">
@@ -73,7 +40,7 @@ const SignUpForm = () => {
               className="w-full py-1 px-3"
               placeholder="パスワード"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleSetPassword}
             />
           </div>
           <div className="rounded-md outline-1 -outline-offset-1 outline-gray-300">
@@ -82,7 +49,7 @@ const SignUpForm = () => {
               className="w-full py-1 px-3"
               placeholder="パスワード（確認）"
               value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)}
+              onChange={handleSetPasswordConfirmation}
             />
           </div>
           {/* エラーメッセージがあれば */}
@@ -110,7 +77,7 @@ const SignUpForm = () => {
         既にアカウントをお持ちの場合は
         <span
           className="px-1 cursor-pointer underline underline-offset-4"
-          onClick={() => handleClickLogin()}
+          onClick={handleClickLogin}
         >
           ログイン
         </span>
