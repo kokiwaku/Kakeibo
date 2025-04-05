@@ -2,13 +2,13 @@
 
 import React, { useState, Dispatch, SetStateAction } from 'react'
 import { useTransactionModalContext } from '@/contexts/TransactionModalContext'
-import { TransactionItemType } from '@/types/TransactionType'
+import { TransactionItem } from '@/types/models/transaction'
 import { dateImplodeByDelimiter } from '@/utils/dateHelper'
 
-type Prop = {
-  transactionList: TransactionItemType[]
+type Props = {
+  transactionList: TransactionItem[]
 }
-const TransactionList = ({ transactionList }: Prop) => {
+const TransactionList = ({ transactionList }: Props) => {
   const { openModal } = useTransactionModalContext()
   return (
     <>

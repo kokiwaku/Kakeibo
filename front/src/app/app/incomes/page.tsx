@@ -3,11 +3,11 @@
 import TransactionHeader from '@components/TransactionHeader'
 import TransactionModal from '@components/TransactionModal'
 import TransactionList from '@components/TransactionList'
-import { TransactionItemType } from '@/types/TransactionType'
+import { TransactionItem } from '@/types/models/transaction'
 
 const Page = () => {
   // TODO 仮 データ表示用
-  const transactionList: TransactionItemType[] = [
+  const transactionList: TransactionItem[] = [
     {
       id: 1,
       date: new Date('2021/01/01'),
