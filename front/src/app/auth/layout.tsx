@@ -1,4 +1,3 @@
-import { SignUpProvider } from '@/features/auth/contexts/SignUpContext'
 import { Metadata } from 'next'
 import React, { ReactNode } from 'react'
 
@@ -9,11 +8,9 @@ export const metadata: Metadata = {
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <SignUpProvider>
-      <div className="flex h-screen w-screen flex-col items-center justify-center">
-        {children}
-      </div>
-    </SignUpProvider>
+    <div className="flex h-screen w-screen flex-col items-center justify-center">
+      {children}
+    </div>
   )
 }
 

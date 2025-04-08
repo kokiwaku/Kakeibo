@@ -2,11 +2,10 @@ import globalAxios, { isAxiosError } from '@/libs/api-client'
 import { Response, ApiError } from '@/types/api'
 import { paths } from '@/config/paths'
 
-export const signUp = async (email: string, name: string, password: string) => {
+export const login = async (email: string, password: string) => {
   try {
-    await globalAxios.post(paths.api.auth.register, {
+    await globalAxios.post(paths.api.auth.login, {
       email,
-      name,
       password,
     })
 
@@ -17,7 +16,7 @@ export const signUp = async (email: string, name: string, password: string) => {
   } catch (error) {
     const result: Response = {
       code: 500,
-      message: ['An error occurred while registering the user.'],
+      message: ['An error occurred while login.'],
     }
     if (isAxiosError(error)) {
       const axiosError = error as ApiError

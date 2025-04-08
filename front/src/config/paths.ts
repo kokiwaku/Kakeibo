@@ -5,6 +5,7 @@ export const paths = {
   api: {
     auth: {
       register: '/auth/register',
+      login: '/auth/login',
     },
   },
   app: {
