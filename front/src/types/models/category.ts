@@ -1,21 +1,24 @@
-export type CategoryType = {
+export type Category = {
   id: number
   name: string
   subCategory?: { id: number; name: string }[]
 }
-export type DisplayCategoryType = {
-  category: CategoryType[]
+
+export type DisplayCategory = {
+  category: Category[]
   position: {
     top: number
     left: number
   }
 }
-export type SubCategoryType = {
+
+export type SubCategory = {
   id: number
   name: string
 }
-export type DisplaySubCategoryType = {
-  category: CategoryType
+
+export type DisplaySubCategory = {
+  category: SubCategory
   position: {
     top: number
     right: number

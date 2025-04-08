@@ -1,6 +1,6 @@
 'use client'
 
-import MonthYearPicker from '@components/MonthYearPicker'
+import MonthYearPicker from '@/components/MonthYearPicker'
 import { useTransactionModalContext } from '@/contexts/TransactionModalContext'
 
 const ExpenseHeader = () => {

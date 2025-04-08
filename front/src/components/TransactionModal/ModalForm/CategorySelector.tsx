@@ -4,30 +4,28 @@ import { useState, useCallback, useEffect } from 'react'
 import { ChevronDownIcon, CheckIcon } from '@heroicons/react/16/solid'
 import { useTransactionModalContext } from '@/contexts/TransactionModalContext'
 import {
-  CategoryType,
-  DisplayCategoryType,
-  SubCategoryType,
-  DisplaySubCategoryType,
-} from '@/types/CategoryType'
+  Category,
+  DisplayCategory,
+  SubCategory,
+  DisplaySubCategory,
+} from '@/types/models/category'
 
 const CategorySelector = () => {
   const { modalRef, categoryList } = useTransactionModalContext()
   const [categoryLabel, setCategoryLabel] = useState<string>('未分類')
-  const [focusedCategory, setFocusedCategory] = useState<CategoryType | null>(
-    null,
-  )
+  const [focusedCategory, setFocusedCategory] = useState<Category | null>(null)
   // TODO: カテゴリは仮のデータなので、ユーザーごとの値をDBから取得して差し替えが必要
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   )
   const [displayCategory, setDisplayCategory] =
-    useState<DisplayCategoryType | null>(null)
+    useState<DisplayCategory | null>(null)
   const [selectedSubCategory, setSelectedSubCategory] =
-    useState<SubCategoryType | null>(null)
+    useState<SubCategory | null>(null)
   const [displaySubCategory, setDisplaySubCategory] =
-    useState<DisplaySubCategoryType | null>(null)
+    useState<DisplaySubCategory | null>(null)
   const [focusedSubCategory, setFocusedSubCategory] =
-    useState<SubCategoryType | null>(null)
+    useState<SubCategory | null>(null)
 
   /**
    * カテゴリ選択フォームクリック時
@@ -52,7 +50,7 @@ const CategorySelector = () => {
    */
   const handleCategoryFocusOn = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
-    focusOnTargetCategory: CategoryType,
+    focusOnTargetCategory: Category,
   ) => {
     setFocusedCategory(focusOnTargetCategory)
     // サブカテゴリを持っていない場合、終了
@@ -82,7 +80,7 @@ const CategorySelector = () => {
   /**
    * カテゴリにフォーカスのスタイルを当てるかどうか
    */
-  const isApplyFocusStyleCategory = (applyTargetCategory: CategoryType) => {
+  const isApplyFocusStyleCategory = (applyTargetCategory: Category) => {
     if (focusedCategory?.id === applyTargetCategory.id) {
       return true
     }
@@ -94,7 +92,7 @@ const CategorySelector = () => {
    */
   const handleCategoryClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    clickTargetCategory: CategoryType,
+    clickTargetCategory: Category,
   ) => {
     // カテゴリだけを選択する動作になるため、サブカテゴリの選択状態はリセット
     setSelectedCategory(clickTargetCategory)
@@ -104,9 +102,7 @@ const CategorySelector = () => {
   /**
    * サブカテゴリフォーカス時
    */
-  const handleSubCategoryFocusOn = (
-    focusOnTargetSubCategory: SubCategoryType,
-  ) => {
+  const handleSubCategoryFocusOn = (focusOnTargetSubCategory: SubCategory) => {
     setFocusedSubCategory(focusOnTargetSubCategory)
   }
   /**
@@ -118,7 +114,7 @@ const CategorySelector = () => {
   /**
    * サブカテゴリクリック時
    */
-  const handleSubCategoryClick = (clickTargetSubCategory: SubCategoryType) => {
+  const handleSubCategoryClick = (clickTargetSubCategory: SubCategory) => {
     // カテゴリ & サブカテゴリを選択状態にする
     setSelectedSubCategory(clickTargetSubCategory)
     if (!displaySubCategory) {

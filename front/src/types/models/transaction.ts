@@ -1,6 +1,6 @@
 export type TransactionType = 'incomes' | 'expenses'
 
-export type TransactionItemType = {
+export type TransactionItem = {
   id: number
   date: Date
   category: string

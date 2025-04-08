@@ -40,7 +40,7 @@ class AuthController extends Controller
                     'status' => 'error',
                     'error' => [
                         'type' => $e->getErrorType(),
-                        'message' => $e->getMessage(),
+                        'message' => [$e->getMessage()],
                     ]
                 ], status: $e->getCode());
             }
@@ -79,7 +79,7 @@ class AuthController extends Controller
                     'status' => 'error',
                     'error' => [
                         'type' => $e->getErrorType(),
-                        'message' => $e->getMessage(),
+                        'message' => [$e->getMessage()],
                     ]
                 ], status: $e->getCode());
             }
@@ -88,7 +88,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'error' => [
                     'type' => 'server_error',
-                    'message' => 'An unexpected error occurred.',
+                    'message' => ['An unexpected error occurred.'],
                 ]
             ], 500);
         }
@@ -114,7 +114,7 @@ class AuthController extends Controller
                     'status' => 'error',
                     'error' => [
                         'type' => $e->getErrorType(),
-                        'message' => $e->getMessage(),
+                        'message' => [$e->getMessage()],
                     ]
                 ], status: $e->getCode());
             }
@@ -123,7 +123,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'error' => [
                     'type' => 'server_error',
-                    'message' => 'An unexpected error occurred.',
+                    'message' => ['An unexpected error occurred.'],
                 ]
             ], 500);
         }
@@ -149,7 +149,7 @@ class AuthController extends Controller
                     'status' => 'error',
                     'error' => [
                         'type' => $e->getErrorType(),
-                        'message' => $e->getMessage(),
+                        'message' => [$e->getMessage()],
                     ]
                 ], status: $e->getCode());
             }
@@ -158,7 +158,7 @@ class AuthController extends Controller
                 'status' => 'error',
                 'error' => [
                     'type' => 'server_error',
-                    'message' => 'An unexpected error occurred.',
+                    'message' => ['An unexpected error occurred.'],
                 ]
             ], 500);
         }

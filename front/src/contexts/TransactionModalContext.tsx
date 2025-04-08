@@ -7,8 +7,8 @@ import React, {
   useState,
   useRef,
 } from 'react'
-import { CategoryType } from '@/types/CategoryType'
-import { TransactionType } from '@/types/TransactionType'
+import { Category } from '@/types/models/category'
+import { TransactionType } from '@/types/models/transaction'
 
 export type CrudType = 'create' | 'update' | 'delete'
 
@@ -19,7 +19,7 @@ export type TransactionModalContextType = {
   closeModal: () => void
   modalRef: any
   transactionType: TransactionType
-  categoryList: CategoryType[]
+  categoryList: Category[]
 }
 
 // 明示的な型アノテーションを追加
@@ -28,7 +28,7 @@ export const TransactionModalContext =
 
 type ModalProviderProps = {
   transactionType: TransactionType
-  categoryList: CategoryType[]
+  categoryList: Category[]
   children: ReactNode
 }
 export const TransactionModalProvider: React.FC<ModalProviderProps> = ({
