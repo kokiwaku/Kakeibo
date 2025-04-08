@@ -6,6 +6,7 @@ import {
   TagIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline'
+import { paths } from '@/config/paths'
 
 const SidePanel = () => {
   type Menu = {
@@ -16,22 +17,22 @@ const SidePanel = () => {
   const menuList: Menu[] = [
     {
       name: 'ダッシュボード',
-      url: '/app',
+      url: paths.app.home,
       icon: <ChartBarIcon className="h-5 w-5" />,
     },
     {
       name: '収入',
-      url: '/app/incomes',
+      url: paths.app.incomes,
       icon: <CurrencyYenIcon className="h-5 w-5" />,
     },
     {
       name: '支出',
-      url: '/app/expenses',
+      url: paths.app.expenses,
       icon: <ShoppingBagIcon className="h-5 w-5" />,
     },
     {
       name: 'カテゴリ',
-      url: '/app/categories',
+      url: paths.app.categories,
       icon: <TagIcon className="h-5 w-5" />,
     },
   ]
@@ -54,7 +55,9 @@ const SidePanel = () => {
       </nav>
       <div className="px-4 mt-10">
         <button className="bg-red-500 text-white hover:bg-red-300 rounded-md px-4 py-2 cursor-pointer">
-          ログアウト
+          <Link className="flex items-center py-2" href={paths.auth.login}>
+            ログアウト
+          </Link>
         </button>
       </div>
     </aside>

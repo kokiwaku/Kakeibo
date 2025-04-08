@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { BACK_API_ENDPOINT } from '@/constants/server'
+import { BACK_API_ENDPOINT } from '@/config/server'
 
 // axiosのインスタンスを作成
 const globalAxios = axios.create({

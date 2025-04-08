@@ -56,4 +56,10 @@ export const SignUpProvider: React.FC<Props> = ({ children }) => {
   )
 }
 
-export const useSignUpContext = () => useContext(SignUpContext)
+export const useSignUpContext = () => {
+  const context = useContext(SignUpContext)
+  if (context === undefined) {
+    throw new Error('useSignUpContext must be used within a SignUpContext')
+  }
+  return context
+}
