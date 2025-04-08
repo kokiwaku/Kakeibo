@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { Event } from '@/types/event'
 import { useRouter, redirect } from 'next/navigation'
 import { signUp } from '../apis/register-user'
+import { paths } from '@/config/paths'
 
 export const useSignUp = () => {
+  // state
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
@@ -15,6 +17,7 @@ export const useSignUp = () => {
   const [errorMessages, setErrorMessages] = useState<Array<string>>([])
   const router = useRouter()
 
+  // event 操作
   const handleSetEmail: Event['onChangeInput'] = (event) => {
     setEmail(event.target.value)
   }
@@ -25,8 +28,14 @@ export const useSignUp = () => {
     setPasswordConfirmation(event.target.value)
   }
   const handleClickLogin = () => {
-    router.push('/auth/login')
+    router.push(paths.auth.login)
   }
+
+  /**
+   * Sign up ボタンを押した時の処理
+   * @param event
+   * @returns
+   */
   const handleSubmit: Event['onSubmit'] = async (event) => {
     event.preventDefault()
 
@@ -48,7 +57,7 @@ export const useSignUp = () => {
     }
 
     // 認証OK
-    redirect('/app')
+    redirect(paths.app.home)
   }
 
   // 何かしら入力されたらエラーメッセージを削除
