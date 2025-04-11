@@ -1,10 +1,10 @@
 import globalAxios, { isAxiosError } from '@/libs/api-client'
 import { Response, ApiError } from '@/types/api'
-import { paths } from '@/config/paths'
+import { api } from '@/config/api'
 
 export const signUp = async (email: string, name: string, password: string) => {
   try {
-    await globalAxios.post(paths.api.auth.register, {
+    await globalAxios.post(api.endpoints.auth.register, {
       email,
       name,
       password,

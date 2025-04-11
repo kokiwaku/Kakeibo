@@ -1,10 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { Event } from '@/types/event'
-import { redirect } from 'next/navigation'
-import { paths } from '@/config/paths'
 import { useLoginContext } from '../contexts/LoginContext'
 
 const LoginForm = () => {
