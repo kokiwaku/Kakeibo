@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState, Dispatch, SetStateAction } from 'react'
-import { useTransactionModalContext } from '@/contexts/TransactionModalContext'
+import React from 'react'
+import { useTransactionModalContext } from '@/features/app/contexts/common/TransactionModalContext'
 import { TransactionItem } from '@/types/models/transaction'
 import { dateImplodeByDelimiter } from '@/utils/dateHelper'
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Label, Field, Textarea } from '@headlessui/react'
-import CategorySelector from './ModalForm/CategorySelector'
+import CategorySelector from './CategorySelector'
 
 const ModalForm = () => {
   const [date, setDate] = useState<string>('')

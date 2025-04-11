@@ -1,7 +1,7 @@
 'use client'
 
-import { useCategoryContext } from '@/features/categories/contexts/CategoryContext'
-import InputForm from './categoryList/InputForm'
+import { useCategoryContext } from '@/features/app/contexts/categories/CategoryContext'
+import InputForm from './InputForm'
 
 const CategoriesList = () => {
   const { categoryList } = useCategoryContext()

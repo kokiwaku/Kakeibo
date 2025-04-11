@@ -6,7 +6,7 @@ import {
   getPrevYearMonth,
   getNextYearMonth,
   formatISOString,
-} from '@utils/dateHelper'
+} from '@/utils/dateHelper'
 
 const MonthYearPicker = () => {
   const [inputDate, setInputDate] = useState(getYearMonthISOString())
