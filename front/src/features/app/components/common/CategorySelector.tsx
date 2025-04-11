@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react'
 import { ChevronDownIcon, CheckIcon } from '@heroicons/react/16/solid'
-import { useTransactionModalContext } from '@/contexts/TransactionModalContext'
+import { useTransactionModalContext } from '@/features/app/contexts/common/TransactionModalContext'
 import {
   Category,
   DisplayCategory,

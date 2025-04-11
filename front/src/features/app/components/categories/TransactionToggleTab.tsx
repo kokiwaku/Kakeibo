@@ -1,5 +1,6 @@
 'use client'
-import { useCategoryContext } from '@/features/categories/contexts/CategoryContext'
+
+import { useCategoryContext } from '@/features/app/contexts/categories/CategoryContext'
 
 const TransactionToggleTab = () => {
   const { transactionType, changeTransactionType } = useCategoryContext()

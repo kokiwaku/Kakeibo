@@ -1,7 +1,7 @@
 'use client'
 import { PlusCircleIcon } from '@heroicons/react/16/solid'
 
-const InputForm = () => {
+const InputForm: React.FC = () => {
   return (
     <>
       <div className="flex gap-3 items-center text-sm">

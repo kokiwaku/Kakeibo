@@ -1,27 +1,18 @@
 'use client'
 
-import React, { useState, Dispatch, SetStateAction } from 'react'
+import React from 'react'
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from '@headlessui/react'
-import {
-  CrudType,
-  useTransactionModalContext,
-} from '@/contexts/TransactionModalContext'
-import ModalForm from './TransactionModal/ModalForm'
+import { useTransactionModalContext } from '@/features/app/contexts/common/TransactionModalContext'
+import ModalForm from './ModalForm'
 
 const TransactionModal = () => {
-  const {
-    isOpenModal,
-    openModal,
-    closeModal,
-    crudType,
-    modalRef,
-    transactionType,
-  } = useTransactionModalContext()
+  const { isOpenModal, closeModal, crudType, modalRef, transactionType } =
+    useTransactionModalContext()
 
   let transactionTitle = ''
   switch (transactionType) {

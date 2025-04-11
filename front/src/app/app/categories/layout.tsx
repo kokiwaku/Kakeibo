@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import React, { ReactNode } from 'react'
-import { CategoryProvider } from '@/features/categories/contexts/CategoryContext'
+import { CategoryProvider } from '@/features/app/contexts/categories/CategoryContext'
 
 export const metadata: Metadata = {
   title: 'Create Next App',

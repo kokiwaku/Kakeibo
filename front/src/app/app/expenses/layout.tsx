@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import React, { ReactNode } from 'react'
-import { TransactionModalProvider } from '@/contexts/TransactionModalContext'
+import { TransactionModalProvider } from '@/features/app/contexts/common/TransactionModalContext'
 import { Category } from '@/types/models/category'
 
 export const metadata: Metadata = {
