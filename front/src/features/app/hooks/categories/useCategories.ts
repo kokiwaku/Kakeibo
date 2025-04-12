@@ -17,6 +17,7 @@ export const useCategories = () => {
     incomes: [],
     expenses: [],
   })
+  const [loading, setLoading] = useState(true)
 
   const changeTransactionType = useCallback(
     (newTransactionType: TransactionType) => {
@@ -111,6 +112,7 @@ export const useCategories = () => {
   // 初期表示時に両方のカテゴリを取得
   useEffect(() => {
     fetchAllCategories()
+    setLoading(false)
   }, [fetchAllCategories])
 
   return {
@@ -119,5 +121,6 @@ export const useCategories = () => {
     addParentCategory,
     addChildCategory,
     transactionType,
+    loading,
   }
 }

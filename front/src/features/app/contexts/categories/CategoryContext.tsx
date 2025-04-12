@@ -18,6 +18,7 @@ export type CategoryContextType = {
     categoryName: string,
     parentCategoryId: number,
   ) => void
+  loading: boolean
 }
 
 // 明示的な型アノテーションを追加
@@ -37,6 +38,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
     addParentCategory,
     addChildCategory,
     transactionType,
+    loading,
   } = useCategories()
   return (
     <CategoryContext.Provider
@@ -46,6 +48,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
         changeTransactionType,
         addParentCategory,
         addChildCategory,
+        loading,
       }}
     >
       {children}
