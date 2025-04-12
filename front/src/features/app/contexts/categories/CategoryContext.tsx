@@ -13,6 +13,11 @@ export type CategoryContextType = {
     transactionType: TransactionType,
     categoryName: string,
   ) => void
+  addChildCategory: (
+    transactionType: TransactionType,
+    categoryName: string,
+    parentCategoryId: number,
+  ) => void
 }
 
 // 明示的な型アノテーションを追加
@@ -30,6 +35,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
     categoryList,
     changeTransactionType,
     addParentCategory,
+    addChildCategory,
     transactionType,
   } = useCategories()
   return (
@@ -39,6 +45,7 @@ export const CategoryProvider: React.FC<CategoryProviderProps> = ({
         categoryList,
         changeTransactionType,
         addParentCategory,
+        addChildCategory,
       }}
     >
       {children}

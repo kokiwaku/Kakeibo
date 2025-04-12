@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { TransactionType } from '@/types/models/transaction'
-import { Category } from '@/types/models/category'
+import { Category, SubCategory } from '@/types/models/category'
 import {
   fetchCategories,
   postParentCategory,
+  postChildCategory,
 } from '@/features/app/apis/categories'
 
 export const useCategories = () => {
@@ -46,7 +47,7 @@ export const useCategories = () => {
     }
   }, [])
 
-  // カテゴリを追加
+  // 親カテゴリを追加
   const addParentCategory = useCallback(
     async (transactionType: TransactionType, categoryName: string) => {
       const response = await postParentCategory(transactionType, categoryName)
@@ -70,6 +71,43 @@ export const useCategories = () => {
     [],
   )
 
+  // 子カテゴリを追加
+  const addChildCategory = useCallback(
+    async (
+      transactionType: TransactionType,
+      categoryName: string,
+      parentCategoryId: number,
+    ) => {
+      const response = await postChildCategory(
+        transactionType,
+        categoryName,
+        parentCategoryId,
+      )
+      if (response.code !== 200 || response?.data === null) {
+        console.error(response.message)
+        return
+      }
+
+      const categoryData = response.data as SubCategory
+      setCategories((prev) => {
+        const updatedCategories = prev[transactionType].map((category) => {
+          if (category.id === parentCategoryId) {
+            return {
+              ...category,
+              subCategory: [...(category.subCategory || []), categoryData],
+            }
+          }
+          return category
+        })
+
+        return {
+          ...prev,
+          [transactionType]: updatedCategories,
+        }
+      })
+    },
+    [],
+  )
   // 初期表示時に両方のカテゴリを取得
   useEffect(() => {
     fetchAllCategories()
@@ -79,6 +117,7 @@ export const useCategories = () => {
     categoryList: categories[transactionType],
     changeTransactionType,
     addParentCategory,
+    addChildCategory,
     transactionType,
   }
 }

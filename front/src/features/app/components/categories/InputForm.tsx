@@ -14,7 +14,7 @@ const InputForm: React.FC<InputFormProps> = ({
   transactionType,
   parentCategory,
 }) => {
-  const { addParentCategory } = useCategoryContext()
+  const { addParentCategory, addChildCategory } = useCategoryContext()
   const [category, setCategory] = useState('')
 
   const handleAddCategory = () => {
@@ -22,10 +22,10 @@ const InputForm: React.FC<InputFormProps> = ({
       return
     }
 
-    if (!parentCategory) {
-      addParentCategory(transactionType, category)
+    if (parentCategory) {
+      addChildCategory(transactionType, category, parentCategory.id)
     } else {
-      // addParentCategory(transactionType, category)
+      addParentCategory(transactionType, category)
     }
     setCategory('')
   }
