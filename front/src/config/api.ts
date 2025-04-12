@@ -19,9 +19,10 @@ export const api = {
       // list取得用
       getList: '/categories',
       // 追加用
-      create: '/categories',
+      postParent: '/categories/parent',
+      postChild: '/categories/child',
       // 更新用
-      update: '/categories/:id',
+      put: '/categories/:id',
       // 削除用
       delete: '/categories/:id',
     },
