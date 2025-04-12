@@ -4,7 +4,7 @@ import { useCategoryContext } from '@/features/app/contexts/categories/CategoryC
 import InputForm from './InputForm'
 
 const CategoriesList = () => {
-  const { categoryList } = useCategoryContext()
+  const { categoryList, transactionType } = useCategoryContext()
   return (
     <div className="flex flex-col gap-1 px-5 pt-2 max-h-150 overflow-auto">
       {categoryList.map((category, index) => (
@@ -19,12 +19,15 @@ const CategoriesList = () => {
             </div>
           ))}
           <div className="ml-3 w-2/4">
-            <InputForm />
+            <InputForm
+              transactionType={transactionType}
+              parentCategory={category}
+            />
           </div>
         </div>
       ))}
       <div className="rounded-md pt-1 pb-5">
-        <InputForm />
+        <InputForm transactionType={transactionType} />
       </div>
     </div>
   )

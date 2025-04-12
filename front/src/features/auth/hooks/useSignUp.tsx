@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Event } from '@/types/event'
 import { useRouter, redirect } from 'next/navigation'
 import { signUp } from '../apis/register-user'
-import { paths } from '@/config/paths'
+import { routes } from '@/config/routes'
 
 export const useSignUp = () => {
   // state
@@ -28,7 +28,7 @@ export const useSignUp = () => {
     setPasswordConfirmation(event.target.value)
   }
   const handleClickLogin = () => {
-    router.push(paths.auth.login)
+    router.push(routes.auth.login)
   }
 
   /**
@@ -57,7 +57,7 @@ export const useSignUp = () => {
     }
 
     // 認証OK
-    redirect(paths.app.home)
+    redirect(routes.app.home)
   }
 
   // 何かしら入力されたらエラーメッセージを削除

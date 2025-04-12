@@ -1,9 +1,9 @@
 import axios, { AxiosError } from 'axios'
-import { BACK_API_ENDPOINT } from '@/config/server'
+import { api } from '@/config/api'
 
 // axiosのインスタンスを作成
 const globalAxios = axios.create({
-  baseURL: BACK_API_ENDPOINT,
+  baseURL: api.baseURL,
   headers: {
     'Content-type': 'application/json',
   },

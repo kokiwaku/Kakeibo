@@ -1,13 +1,7 @@
 /**
- * パスの定義
+ * アプリケーションのルーティングパス
  */
-export const paths = {
-  api: {
-    auth: {
-      register: '/auth/register',
-      login: '/auth/login',
-    },
-  },
+export const routes = {
   app: {
     home: '/app',
     categories: '/app/categories',
