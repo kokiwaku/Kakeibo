@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import {
   ChartBarIcon,
@@ -7,8 +9,10 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline'
 import { routes } from '@/config/routes'
+import { useAuth } from '@/features/app/hooks/common/useAuth'
 
 const SidePanel = () => {
+  const { handleLogout } = useAuth()
   type Menu = {
     name: string
     url: string
@@ -54,10 +58,11 @@ const SidePanel = () => {
         ))}
       </nav>
       <div className="px-4 mt-10">
-        <button className="bg-red-500 text-white hover:bg-red-300 rounded-md px-4 py-2 cursor-pointer">
-          <Link className="flex items-center py-2" href={routes.auth.login}>
-            ログアウト
-          </Link>
+        <button
+          className="bg-red-500 text-white hover:bg-red-300 rounded-md px-4 py-2 cursor-pointer"
+          onClick={handleLogout}
+        >
+          ログアウト
         </button>
       </div>
     </aside>
