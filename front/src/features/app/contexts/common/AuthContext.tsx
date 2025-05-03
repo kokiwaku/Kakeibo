@@ -5,6 +5,7 @@ import { useAuth } from '@/features/app/hooks/common/useAuth'
 
 type ContextType = {
   handleLogout: () => void
+  isTokenValidated: boolean
 }
 export const AuthContext = createContext({} as ContextType)
 
@@ -12,10 +13,10 @@ type Props = {
   children: ReactNode
 }
 export const AuthProvider: React.FC<Props> = ({ children }) => {
-  const { handleLogout } = useAuth()
-
+  const { handleLogout, isTokenValidated } = useAuth()
   const value = {
     handleLogout,
+    isTokenValidated,
   }
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

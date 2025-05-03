@@ -14,6 +14,7 @@ export const api = {
     auth: {
       register: '/auth/register',
       login: '/auth/login',
+      validateToken: '/auth/validate_token',
     },
     categories: {
       // list取得用

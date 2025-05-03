@@ -13,7 +13,6 @@ const lastIdMap = {
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
-  debugger
   const transactionType = body.transactionType as TransactionType
   const categoryName = body.categoryName as string
 
