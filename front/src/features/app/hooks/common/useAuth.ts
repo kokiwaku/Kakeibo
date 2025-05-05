@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { routes } from '@/config/routes'
-import { validateToken } from '@/features/app/apis/auth'
+import { validateToken, logout } from '@/features/app/apis/auth'
 
 export const useAuth = () => {
   const router = useRouter()
@@ -12,9 +12,8 @@ export const useAuth = () => {
 
   // ユーザー情報
   // ログアウト
-  const handleLogout = () => {
-    // TODO　tokenを無効にする
-    // ログインページにリダイレクト
+  const handleLogout = async () => {
+    await logout()
     router.push(routes.auth.login)
   }
 

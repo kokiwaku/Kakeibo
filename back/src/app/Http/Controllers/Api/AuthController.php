@@ -140,10 +140,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout(LogoutUseCase $logoutUseCase)
+    public function logout(Request $request, LogoutUseCase $logoutUseCase)
     {
         try {
-            $token = Auth::getToken();
+            $token = $request->cookie('auth_token');
             $logoutUseCaseRequest = new LogoutUseCaseRequest($token);
             $logoutUseCase->execute($logoutUseCaseRequest);
         } catch (Throwable $e) {
@@ -167,6 +167,7 @@ class AuthController extends Controller
         }
 
         // ログアウト成功
-        return response()->json(null, 204);
+        // tokenを削除
+        return response()->json(null, 204)->cookie('auth_token', null, -1);
     }
 }

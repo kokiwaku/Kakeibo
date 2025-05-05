@@ -20,7 +20,30 @@ export const validateToken = async (): Promise<Response<null>> => {
     return {
       code: 500,
       data: null,
-      message: ['An error occurred while login.'],
+      message: ['An error occurred while validate token.'],
+    }
+  }
+}
+
+export const logout = async (): Promise<Response<null>> => {
+  try {
+    await globalAxios.post(api.endpoints.auth.logout)
+    return {
+      code: 204,
+    }
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const axiosError = error as ApiError
+      return {
+        code: axiosError.response?.status ?? 500,
+        data: null,
+        message: axiosError.response?.data.error.message,
+      }
+    }
+    return {
+      code: 500,
+      data: null,
+      message: ['An error occurred while logout.'],
     }
   }
 }
