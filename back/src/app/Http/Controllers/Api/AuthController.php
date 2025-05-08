@@ -20,6 +20,7 @@ use App\UseCase\Auth\LogoutUseCase;
 use App\UseCase\Auth\ValidateTokenUseCase;
 use App\UseCase\Auth\ValidateTokenUseCaseRequest;
 use Throwable;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -61,6 +62,8 @@ class AuthController extends Controller
                 'user' => $resigterResponse->user,
             ],
         ], 200);
+
+        // TODO 動作環境毎に設定値を切り替えるように
         $response->cookie('auth_token', $resigterResponse->token, 60, '/', null, false, true);
 
         return $response;
@@ -102,10 +105,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function validateToken(ValidateTokenUseCase $validateTokenUseCase)
+    public function validateToken(Request $request, ValidateTokenUseCase $validateTokenUseCase)
     {
         try {
-            $token = Auth::getToken();
+            $token = $request->cookie('auth_token');
             $validateTokenUseCaseRequest = new ValidateTokenUseCaseRequest($token);
             $validateTokenUseCase->execute($validateTokenUseCaseRequest);
         } catch (Throwable $e) {
@@ -137,10 +140,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout(LogoutUseCase $logoutUseCase)
+    public function logout(Request $request, LogoutUseCase $logoutUseCase)
     {
         try {
-            $token = Auth::getToken();
+            $token = $request->cookie('auth_token');
             $logoutUseCaseRequest = new LogoutUseCaseRequest($token);
             $logoutUseCase->execute($logoutUseCaseRequest);
         } catch (Throwable $e) {
@@ -164,6 +167,7 @@ class AuthController extends Controller
         }
 
         // ログアウト成功
-        return response()->json(null, 204);
+        // tokenを削除
+        return response()->json(null, 204)->cookie('auth_token', null, -1);
     }
 }

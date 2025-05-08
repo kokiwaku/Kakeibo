@@ -36,8 +36,8 @@ class RegisterUseCase
 
             // ユーザーを認証済み状態にしてtokenを発行
             $credentials = [
-                'email' => $user->email,
-                'password' => $user->password,
+                'email' => $request->email,
+                'password' => $request->password->value,
             ];
             try {
                 $token = Auth::attempt(credentials: $credentials);

@@ -13,7 +13,8 @@ class LogoutUseCase
     public function execute(LogoutUseCaseRequest $request)
     {
         try {
-            Auth::invalidate($request->token);
+            Auth::setToken($request->token);
+            Auth::invalidate();
         } catch(Throwable $e) {
             // 無効なトークンの場合
             if ($e instanceof TokenInvalidException) {
