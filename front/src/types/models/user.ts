@@ -1,7 +1,3 @@
-export type User = {
-  id: string
+export type UserInfo = {
   name: string
-  email: string
-  created_at: string
-  updated_at: string
 }
