@@ -12,7 +12,7 @@ import { routes } from '@/config/routes'
 import { useAuth } from '@/features/app/hooks/common/useAuth'
 
 const SidePanel = () => {
-  const { handleLogout } = useAuth()
+  const { handleLogout, userInfo } = useAuth()
   type Menu = {
     name: string
     url: string
@@ -47,7 +47,7 @@ const SidePanel = () => {
       </div>
       <div className="flex items-center border-b border-gray-100 px-4 gap-2 h-15">
         <UserCircleIcon className="h-6 w-6" />
-        <p>Test User Name</p>
+        <p>{userInfo.name}</p>
       </div>
       <nav className="px-4">
         {menuList.map((menu, index) => (

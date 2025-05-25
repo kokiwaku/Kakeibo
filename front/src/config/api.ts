@@ -16,6 +16,7 @@ export const api = {
       login: '/auth/login',
       validateToken: '/auth/validate_token',
       logout: '/auth/logout',
+      getUserInfo: '/auth/user_info',
     },
     categories: {
       // list取得用
