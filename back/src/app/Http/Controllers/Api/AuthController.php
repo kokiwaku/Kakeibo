@@ -6,6 +6,7 @@ use App\Domain\Auth\Exception\LoginUseCaseException;
 use App\Domain\Auth\Exception\LogoutUseCaseException;
 use App\Domain\Auth\Exception\RegisterUseCaseException;
 use App\Domain\Auth\Exception\ValidateTokenUseCaseException;
+use App\Domain\Auth\Exception\UserInfoUseCaseException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\LoginRequest;
@@ -13,7 +14,6 @@ use App\UseCase\Auth\LoginUseCaseRequest;
 use App\UseCase\Auth\LogoutUseCaseRequest;
 use App\UseCase\Auth\RegisterUseCase;
 use App\UseCase\Auth\RegisterUseCaseRequest;
-use Illuminate\Support\Facades\Auth;
 use App\Domain\Auth\Model\Value\Password;
 use App\UseCase\Auth\LoginUseCase;
 use App\UseCase\Auth\LogoutUseCase;
@@ -21,6 +21,8 @@ use App\UseCase\Auth\ValidateTokenUseCase;
 use App\UseCase\Auth\ValidateTokenUseCaseRequest;
 use Throwable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Domain\Auth\Model\Entity\User;
 
 class AuthController extends Controller
 {
@@ -169,5 +171,59 @@ class AuthController extends Controller
         // ログアウト成功
         // tokenを削除
         return response()->json(null, 204)->cookie('auth_token', null, -1);
+    }
+
+    /**
+     * 認証済みユーザーの情報を返す
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserInfo()
+    {
+        // 認証済みユーザーの情報を取得
+        try {
+            $authUser = Auth::user();
+            if (!$authUser) {
+                throw new UserInfoUseCaseException(
+                    errorType: UserInfoUseCaseException::USER_NOT_AUTHENTICATED,
+                    message: 'User is not authenticated.',
+                    code: 401,
+                );
+            }
+            $user = new User(
+                id: $authUser->id,
+                email: $authUser->email,
+                name: $authUser->name,
+                password: $authUser->password,
+            );
+        } catch (Throwable $e) {
+            if ($e instanceof UserInfoUseCaseException) {
+                return response()->json([
+                    'status' => 'error',
+                    'error' => [
+                        'type' => $e->getErrorType(),
+                        'message' => [$e->getMessage()],
+                    ]
+                ], status: $e->getCode());
+            }
+
+            return response()->json([
+                'status' => 'error',
+                'error' => [
+                    'type' => 'server_error',
+                    'message' => ['An unexpected error occurred.'],
+                ]
+            ], 500);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
+            ],
+        ], 200);
     }
 }

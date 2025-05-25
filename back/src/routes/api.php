@@ -13,4 +13,7 @@ Route::prefix('auth')->group(function () {
     Route::POST('login', [AuthController::class, 'login']);
     Route::POST('logout', [AuthController::class, 'logout']);
     Route::POST('register', [AuthController::class, 'register']);
+    Route::middleware([AuthMiddleware::class])->group(function () {
+        Route::POST('user_info', [AuthController::class, 'getUserInfo']);
+    });
 });

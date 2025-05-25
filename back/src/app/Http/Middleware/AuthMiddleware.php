@@ -18,10 +18,18 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            $user = Auth::authenticate();
+            // トークンを検証
+            $token = $request->cookie('auth_token');
+            $user = Auth::setToken($token)->user();
             Auth::setUser($user);
         } catch (AuthenticationException $e) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json([
+                'status' => 'error',
+                'error' => [
+                    'type' => 'unauthorized',
+                    'message' => ['Unauthorized.'],
+                ]
+            ], 401);
         }
 
         return $next($request);

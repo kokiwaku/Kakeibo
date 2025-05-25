@@ -9,10 +9,10 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline'
 import { routes } from '@/config/routes'
-import { useAuth } from '@/features/app/hooks/common/useAuth'
+import { useAuthContext } from '@/features/app/contexts/common/AuthContext'
 
 const SidePanel = () => {
-  const { handleLogout, userInfo } = useAuth()
+  const { handleLogout, userInfo } = useAuthContext()
   type Menu = {
     name: string
     url: string
@@ -47,7 +47,7 @@ const SidePanel = () => {
       </div>
       <div className="flex items-center border-b border-gray-100 px-4 gap-2 h-15">
         <UserCircleIcon className="h-6 w-6" />
-        <p>{userInfo.name}</p>
+        <p>{userInfo?.user.name}</p>
       </div>
       <nav className="px-4">
         {menuList.map((menu, index) => (
