@@ -28,9 +28,11 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
  * @returns
  */
 const RenderIfAuthenticated = ({ children }: { children: ReactNode }) => {
-  const { isTokenValidated } = useAuthContext()
-  if (!isTokenValidated) return <div>Loading...</div>
-  return <>{children}</>
+  const { isTokenValidated, userInfo } = useAuthContext()
+  if (isTokenValidated && userInfo) {
+    return <>{children}</>
+  }
+  return <div>Loading...</div>
 }
 
 export default AppLayout

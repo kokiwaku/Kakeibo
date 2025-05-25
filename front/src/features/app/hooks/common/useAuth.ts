@@ -11,11 +11,7 @@ export const useAuth = () => {
   // トークンの検証が完了しているかどうか
   const [isTokenValidated, setIsTokenValidated] = useState(false)
   // ユーザー情報
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    name: '',
-  })
-
-  // ユーザー情報
+  const [userInfo, setUserInfo] = useState<UserInfo>()
   // ログアウト
   const handleLogout = async () => {
     await logout()
@@ -34,20 +30,28 @@ export const useAuth = () => {
 
     // ユーザー情報を取得
     const userInfoResponse = await getUserInfo()
-    if (userInfoResponse.code !== 200 || !userInfoResponse.data) {
+    if (userInfoResponse.code !== 200 || !userInfoResponse.data?.user) {
       // ログインページにリダイレクト
       router.push(routes.auth.login)
       return
     }
+
+    // ユーザー情報をセット
+    const user = userInfoResponse.data.user
     setUserInfo({
-      name: userInfoResponse.data.name,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
     })
+
+    setIsTokenValidated(true)
   }
 
-  // 最初にtokenを検証する
   useEffect(() => {
+    // 初回レンダリング時のみ認証状態を検証
     handleValidateToken()
-    setIsTokenValidated(true)
   }, [])
 
   return {

@@ -55,10 +55,18 @@ export const getUserInfo = async (): Promise<Response<UserInfo>> => {
     const { data }: AxiosResponse<Response<UserInfo>> = await globalAxios.post(
       api.endpoints.auth.getUserInfo,
     )
+    const user = data.data?.user
+    if (!user) {
+      throw new Error('User is not authenticated.')
+    }
     return {
       code: 200,
       data: {
-        name: data.data?.name ?? '',
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
       },
     }
   } catch (error) {
@@ -66,17 +74,11 @@ export const getUserInfo = async (): Promise<Response<UserInfo>> => {
       const axiosError = error as ApiError
       return {
         code: axiosError.response?.status ?? 500,
-        data: {
-          name: '',
-        },
         message: axiosError.response?.data.error.message,
       }
     }
     return {
       code: 500,
-      data: {
-        name: '',
-      },
       message: ['An error occurred while get user info.'],
     }
   }
