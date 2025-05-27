@@ -31,7 +31,7 @@ const IncomesLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <TransactionModalProvider
-        transactionType="incomes"
+        transactionType="income"
         categoryList={categoryList}
       >
         {children}

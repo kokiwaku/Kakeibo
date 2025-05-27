@@ -16,10 +16,10 @@ const TransactionModal = () => {
 
   let transactionTitle = ''
   switch (transactionType) {
-    case 'incomes':
+    case 'income':
       transactionTitle = '収入'
       break
-    case 'expenses':
+    case 'expense':
       transactionTitle = '支出'
       break
   }

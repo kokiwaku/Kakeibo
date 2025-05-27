@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
   }
 
   const data =
-    transactionType === 'expenses' ? expenseCategories : incomeCategories
+    transactionType === 'expense' ? expenseCategories : incomeCategories
 
   const result: Response<Category[]> = {
     code: 200,
