@@ -7,8 +7,8 @@ import { expenseCategories } from '@/mocks/categories/expenseCategories'
 
 // 既存のカテゴリから最後のIDを取得
 const lastIdMap = {
-  expenses: expenseCategories[expenseCategories.length - 1].id,
-  incomes: incomeCategories[incomeCategories.length - 1].id,
+  expense: expenseCategories[expenseCategories.length - 1].id,
+  income: incomeCategories[incomeCategories.length - 1].id,
 }
 
 export async function POST(request: NextRequest) {

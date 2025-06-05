@@ -9,13 +9,13 @@ import {
 
 export const useCategories = () => {
   const [transactionType, setTransactionType] =
-    useState<TransactionType>('incomes')
+    useState<TransactionType>('income')
   const [categories, setCategories] = useState<{
-    incomes: Category[]
-    expenses: Category[]
+    income: Category[]
+    expense: Category[]
   }>({
-    incomes: [],
-    expenses: [],
+    income: [],
+    expense: [],
   })
   const [loading, setLoading] = useState(true)
 
@@ -29,19 +29,19 @@ export const useCategories = () => {
   // 両方のトランザクションタイプのカテゴリを取得
   const fetchAllCategories = useCallback(async () => {
     try {
-      const [incomesResponse, expensesResponse] = await Promise.all([
-        fetchCategories('incomes'),
-        fetchCategories('expenses'),
+      const [incomeResponse, expenseResponse] = await Promise.all([
+        fetchCategories('income'),
+        fetchCategories('expense'),
       ])
 
-      if (incomesResponse.code !== 200 || expensesResponse.code !== 200) {
+      if (incomeResponse.code !== 200 || expenseResponse.code !== 200) {
         console.error('Failed to fetch categories')
         return
       }
 
       setCategories({
-        incomes: incomesResponse.data ?? [],
-        expenses: expensesResponse.data ?? [],
+        income: incomeResponse.data ?? [],
+        expense: expenseResponse.data ?? [],
       })
     } catch (error) {
       console.error('Error fetching categories:', error)

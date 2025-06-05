@@ -179,7 +179,7 @@ const ExpensesLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <TransactionModalProvider
-        transactionType="expenses"
+        transactionType="expense"
         categoryList={categoryList}
       >
         {children}
