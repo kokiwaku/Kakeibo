@@ -22,6 +22,7 @@ class CategoryInitializationService
             // デフォルト親カテゴリを取得
             $defaultParentCategories = $this->defaultCategoryRepository->getDefaultParentCategories();
             // 親カテゴリのマッピング（デフォルトID => 新規作成エンティティ）
+            $parentCategoryMapping = [];
             foreach ($defaultParentCategories as $defaultParent) {
                 // 親カテゴリを作成
                 $newParent = $this->categoryRepository->createParentCategoryFromDefault($userId, $defaultParent);
