@@ -7,14 +7,17 @@ use App\UseCase\Auth\RegisterUseCaseRequest;
 use App\UseCase\Auth\RegisterUseCaseResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Domain\Auth\Repository\UserRepositoryInterface;
+use App\Domain\Category\Service\CategoryInitializationService;
 use Illuminate\Support\Facades\DB;
 use Throwable;
+use Illuminate\Support\Facades\Log;
 
 class RegisterUseCase
 {
 
     public function __construct(
         public readonly UserRepositoryInterface $userRepository,
+        public readonly CategoryInitializationService $categoryInitializationService
     )
     {
     }
@@ -42,9 +45,27 @@ class RegisterUseCase
             try {
                 $token = Auth::attempt(credentials: $credentials);
             } catch (Throwable $e) {
+                Log::error('Failed to generate token.', [
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
                 throw new RegisterUseCaseException(
                     errorType: RegisterUseCaseException::TOKEN_GENERATION_FAILED,
                     message: 'Failed to generate token.',
+                );
+            }
+
+            // デフォルトカテゴリを設定
+            try {
+                $this->categoryInitializationService->initializeDefaultCategories($user->id);
+            } catch (Throwable $e) {
+                Log::error('Failed to initialize default categories.', [
+                    'error' => $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
+                ]);
+                throw new RegisterUseCaseException(
+                    errorType: RegisterUseCaseException::CATEGORY_INITIALIZATION_FAILED,
+                    message: 'Failed to initialize default categories.',
                 );
             }
 

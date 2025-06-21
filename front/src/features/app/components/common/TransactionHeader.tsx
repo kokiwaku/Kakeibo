@@ -5,7 +5,7 @@ import { useTransactionModalContext } from '@/features/app/contexts/common/Trans
 
 const TransactionHeader = () => {
   const { openModal, transactionType } = useTransactionModalContext()
-  const transactionTypeStr = transactionType === 'incomes' ? '収入' : '支出'
+  const transactionTypeStr = transactionType === 'income' ? '収入' : '支出'
   return (
     <div className="flex gap-10">
       <h1 className="text-2xl font-bold">{`${transactionTypeStr}一覧`}</h1>
