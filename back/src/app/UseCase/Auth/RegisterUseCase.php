@@ -7,6 +7,7 @@ use App\UseCase\Auth\RegisterUseCaseRequest;
 use App\UseCase\Auth\RegisterUseCaseResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Domain\Auth\Repository\UserRepositoryInterface;
+use App\Domain\Category\Service\CategoryInitializationService;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -15,6 +16,7 @@ class RegisterUseCase
 
     public function __construct(
         public readonly UserRepositoryInterface $userRepository,
+        public readonly CategoryInitializationService $categoryInitializationService
     )
     {
     }
@@ -47,6 +49,9 @@ class RegisterUseCase
                     message: 'Failed to generate token.',
                 );
             }
+
+            // デフォルトカテゴリを設定
+            $this->categoryInitializationService->initializeDefaultCategories($user->id);
 
             return new RegisterUseCaseResponse(user: $user, token: $token);
         });
