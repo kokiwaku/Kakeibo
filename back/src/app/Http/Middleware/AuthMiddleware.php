@@ -18,9 +18,7 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            // トークンを検証
-            $token = $request->cookie('auth_token');
-            $user = Auth::setToken($token)->user();
+            $user = Auth::authenticate();
             Auth::setUser($user);
         } catch (AuthenticationException $e) {
             return response()->json([
