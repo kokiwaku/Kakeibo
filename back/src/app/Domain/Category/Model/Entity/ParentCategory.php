@@ -9,6 +9,7 @@ class ParentCategory
         public readonly string $name,
         /** @var ChildCategory[] */
         public readonly array $children = [],
+        public readonly int $displayOrder,
     ) {
     }
 }
