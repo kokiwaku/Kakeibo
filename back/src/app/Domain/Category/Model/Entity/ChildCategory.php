@@ -8,6 +8,7 @@ class ChildCategory
         public readonly int $id,
         public readonly string $name,
         public readonly int $parentCategoryId,
+        public readonly int $displayOrder,
     ) {
     }
 }

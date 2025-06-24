@@ -12,7 +12,8 @@ class DefaultCategoryRepository implements DefaultCategoryRepositoryInterface
     public function getDefaultParentCategories(): array
     {
         $records = DB::table('default_parent_categories')
-            ->select('id', 'category_name', 'transaction_type_id')
+            ->select('id', 'category_name', 'transaction_type_id', 'display_order')
+            ->orderBy('display_order')
             ->get()
             ->toArray();
 
@@ -25,7 +26,9 @@ class DefaultCategoryRepository implements DefaultCategoryRepositoryInterface
     public function getDefaultChildCategories(): array
     {
         $records = DB::table('default_child_categories')
-            ->select('id', 'category_name', 'transaction_type_id', 'default_parent_category_id')
+            ->select('id', 'category_name', 'transaction_type_id', 'default_parent_category_id', 'display_order')
+            ->orderBy('default_parent_category_id')
+            ->orderBy('display_order')
             ->get()
             ->toArray();
 

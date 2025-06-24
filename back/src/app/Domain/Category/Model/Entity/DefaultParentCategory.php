@@ -8,6 +8,7 @@ class DefaultParentCategory
         public readonly int $id,
         public readonly string $categoryName,
         public readonly int $transactionTypeId,
+        public readonly int $displayOrder,
     ) {
     }
 
@@ -20,6 +21,7 @@ class DefaultParentCategory
             id: $record['id'],
             categoryName: $record['category_name'],
             transactionTypeId: $record['transaction_type_id'],
+            displayOrder: $record['display_order'],
         );
     }
 }

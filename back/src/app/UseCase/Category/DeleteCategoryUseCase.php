@@ -20,7 +20,7 @@ class DeleteCategoryUseCase
         if (!$category) {
             throw new CategoryNotFoundException('Category not found or access denied.');
         }
-w
+
         // カテゴリを削除
         $this->categoryRepository->deleteCategory(
             categoryId: $request->categoryId,
